@@ -7,7 +7,7 @@
 @section('content')
 <div class="auth-card">
     <h1>ログイン</h1>
-    <form method="POST" action="/login>
+    <form action="/login" method="POST">
         @csrf
         <div class="form-group">
             <label>メールアドレス</label>

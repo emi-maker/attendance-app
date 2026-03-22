@@ -16,3 +16,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/attendance', function () {
     return view('attendance.index');
 });
+
+Route::get('/', function () {
+    return redirect('/login');
+});    

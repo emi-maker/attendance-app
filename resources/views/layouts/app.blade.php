@@ -12,6 +12,7 @@
     @yield('css')
 
 </head>
+
 <body>
     <header class="header">
         <div class="header__inner">
@@ -24,20 +25,19 @@
                 <a href="/attendance">退勤</a>
                 <a href="/attendance/list">退勤一覧</a>
                 <a href="/attendance/request">申請</a>
-            
+
                 <form action="/logout" method="POST">
                     @csrf
-                    <button type="submit">ログアウト</button>
+                    <button>ログアウト</button>
                 </form>
             </nav>
             @endauth
         </div>
     </header>
-
     <main>
         @yield('content')
     </main>
 
 </body>
 
-</html>    
+</html>
