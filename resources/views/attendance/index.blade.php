@@ -19,10 +19,13 @@
     <div class="attendance-time">
         10:30
     </div>
+    <form action="attendance/start" method="POST">
+        @csrf
 
-    <button class="attendance-btn">
-        出勤
-    </button>
+        <button class="attendance-btn">
+            出勤
+        </button>
+    </form>
 
 </div>
 
