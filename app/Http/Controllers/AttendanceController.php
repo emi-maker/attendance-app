@@ -30,6 +30,7 @@ class AttendanceController extends Controller
         'user_id' => auth()->id(),
         'work_date' => now()->toDateString(),
         'clock_in' => now(),
+        'status' => 1,
     ]);
 
         return back();
@@ -48,6 +49,7 @@ class AttendanceController extends Controller
 
         $todayAttendance->update([
         'clock_out' => now(),
+        'status' => 2,
     ]);
 
     return redirect('/attendance');
