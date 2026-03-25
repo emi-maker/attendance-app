@@ -14,9 +14,8 @@ use App\Http\Controllers\AttendanceController;
 |
 */
 
-Route::get('/attendance', function () {
-    return view('attendance.index');
-});
+Route::get('/attendance',[AttendanceController::class, 'index']);  
+
 
 Route::get('/', function () {
     return redirect('/login');
@@ -41,3 +40,6 @@ Route::post('/admin/logout', function () {
 
 //出勤処理 
 Route::post('/attendance/start', [AttendanceController::class, 'start']);
+
+//退勤処理
+Route::post('/attendance/end', [AttendanceController::class, 'end']);

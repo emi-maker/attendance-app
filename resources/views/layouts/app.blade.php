@@ -22,7 +22,7 @@
 
             @auth
             <nav class="header-nav">
-                <a href="/attendance">退勤</a>
+                <a href="/attendance">勤怠</a>
                 <a href="/attendance/list">退勤一覧</a>
                 <a href="/attendance/request">申請</a>
 
