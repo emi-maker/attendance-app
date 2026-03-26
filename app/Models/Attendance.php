@@ -16,4 +16,10 @@ class Attendance extends Model
     'clock_out',
     'status',
     ];
+
+
+    public function breakTimes()
+        {
+        return $this->hasMany(BreakTime::class);
+    }
 }

@@ -41,5 +41,14 @@ Route::post('/admin/logout', function () {
 //出勤処理 
 Route::post('/attendance/start', [AttendanceController::class, 'start']);
 
+//休憩処理
+Route::post('/attendance/break/start', [AttendanceController::class, 'breakStart']);
+
+//休憩戻り処理
+Route::post('/attendance/break/end', [AttendanceController::class, 'breakEnd']);
+
 //退勤処理
 Route::post('/attendance/end', [AttendanceController::class, 'end']);
+
+//一覧処理
+Route::get('/attendance/list', [AttendanceController::class, 'list']);

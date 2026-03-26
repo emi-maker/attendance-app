@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Attendance;
+use App\Models\BreakTime;
 
 class AttendanceController extends Controller
 {
@@ -36,6 +37,44 @@ class AttendanceController extends Controller
         return back();
     }
 
+    public function breakStart()
+    {
+        $attendance = Attendance::where('user_id', auth()->id())
+        ->whereDate('work_date', now()->toDateString())
+        ->first();
+
+        BreakTime::create([
+        'attendance_id' => $attendance->id,
+        'break_start' => now(),
+    ]);
+
+        $attendance->status = 2;
+        $attendance->save();
+
+        return redirect('/attendance');
+    }
+
+
+    public function breakEnd()
+    {
+        $attendance = Attendance::where('user_id', auth()->id())
+        ->whereDate('work_date', now()->toDateString())
+        ->first();
+
+        $break = BreakTime::where('attendance_id', $attendance->id)
+        ->whereNull('break_end')
+        ->latest()
+        ->first();
+
+        $break->break_end = now();
+        $break->save();
+
+        $attendance->status = 1;
+        $attendance->save();
+
+        return redirect('/attendance');
+    }
+
     public function end()
     {
     
@@ -49,9 +88,50 @@ class AttendanceController extends Controller
 
         $todayAttendance->update([
         'clock_out' => now(),
-        'status' => 2,
+        'status' => 3,
     ]);
 
     return redirect('/attendance');
+    }
+
+    public function list()
+    {
+        $attendances = Attendance::where('user_id', auth()->id())
+        ->orderBy('work_date', 'desc')
+        ->get();
+
+        foreach ($attendances as $attendance) {
+        //休憩合計
+        $totalBreak = 0;
+
+        foreach ($attendance->breakTimes as $break) {
+
+            if ($break->break_end) {
+                $start = strtotime($break->break_start);
+                $end = strtotime($break->break_end);
+
+                $totalBreak += ($end - $start);
+            }
+        }
+
+        $attendance->total_break = $totalBreak;
+
+        //勤務合計
+        if ($attendance->clock_in && $attendance->clock_out) {
+
+            $workStart = strtotime($attendance->clock_in);
+            $workEnd = strtotime($attendance->clock_out);
+
+            $workSeconds = $workEnd - $workStart;
+
+            $attendance->total_work = $workSeconds - $attendance->total_break;
+
+        } else {
+            $attendance->total_work = 0;
+        }
+    }
+
+
+    return view('admin.attendance.list', compact('attendances'));
     }
 }
