@@ -58,3 +58,6 @@ Route::get('/attendance/detail/{id}', [AttendanceController::class, 'show']);
 
 //勤怠修正
 Route::post('/attendance/update/{id}', [AttendanceController::class, 'update']);
+
+//修正申請
+Route::post('/attendance/update/{id}', [AttendanceController::class, 'update']);
