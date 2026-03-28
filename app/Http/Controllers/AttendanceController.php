@@ -131,7 +131,24 @@ class AttendanceController extends Controller
         }
     }
 
-
     return view('admin.attendance.list', compact('attendances'));
+    }
+
+    //詳細（データ取ってくる）
+    public function show($id)
+    {
+        $attendance = Attendance::find($id);
+        return view('attendance.detail', compact('attendance'));
+    }
+    //
+    public function update(Request $request, $id)
+    {
+        $attendance = Attendance::find($id);
+
+        $attendance->clock_in = $request->clock_in;
+
+        $attendance->save();
+
+        return redirect('/attendance/list');
     }
 }

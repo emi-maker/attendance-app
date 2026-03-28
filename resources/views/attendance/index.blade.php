@@ -11,6 +11,9 @@
     @if (is_null($todayAttendance))
 
     <div class="attendance-status">勤務外</div>
+    
+    <div class="attendance-date" id="today"></div>
+    <div class="attendance-time" id="clock"></div>
     <form action="/attendance/start" method="POST">
         @csrf
         <button class="attendance-btn">出勤</button>

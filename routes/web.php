@@ -52,3 +52,9 @@ Route::post('/attendance/end', [AttendanceController::class, 'end']);
 
 //一覧処理
 Route::get('/attendance/list', [AttendanceController::class, 'list']);
+
+//勤怠詳細
+Route::get('/attendance/detail/{id}', [AttendanceController::class, 'show']);
+
+//勤怠修正
+Route::post('/attendance/update/{id}', [AttendanceController::class, 'update']);
