@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\LoginController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -25,18 +27,11 @@ Route::get('/', function () {
 Route::get('/admin/login', function () {
     return view('auth.admin.login');
 });
-//ログイン処理管理者
-Route::post('/admin/login', [AdminAuthController::class, 'login']);
 
 // 管理者・勤怠一覧画面
-Route::get('/admin/attendance/list', function () {
-    return view('admin.attendance.list');
-});
+Route::get('/admin/attendance/list',[AttendanceController::class, 'list']);
 
-//管理者ログアウト
-Route::post('/admin/logout', function () {
-    return redirect('/admin/login');
-});
+
 
 //出勤処理 
 Route::post('/attendance/start', [AttendanceController::class, 'start']);

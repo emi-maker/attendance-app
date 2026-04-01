@@ -22,14 +22,16 @@
         <tr>
             <th>出勤・退勤</th>
             <td>
-                <input type="time" name="clock_in" value="{{ \Carbon\Carbon::parse($attendance->clock_in)->format('H:i') }}">
+                <input type="time" name="request_clock_in"
+                    value="{{ \Carbon\Carbon::parse($attendance->clock_in)->format('H:i') }}">
 
-                <input type="time" name="clock_out" value="{{ \Carbon\Carbon::parse($attendance->clock_out)->format('H:i') }}">
+                <input type="time" name="request_clock_out"
+                    value="{{ \Carbon\Carbon::parse($attendance->clock_out)->format('H:i') }}">
             </td>
         </tr>
     </table>
-</form>    
 
     <button type="submit">修正申請</button>
+</form>
 
 @endsection

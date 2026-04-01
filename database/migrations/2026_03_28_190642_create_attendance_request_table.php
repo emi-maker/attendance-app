@@ -13,14 +13,14 @@ class CreateAttendanceRequestTable extends Migration
      */
     public function up()
     {
-        Schema::create('attendance_request', function (Blueprint $table) {
+        Schema::create('attendance_requests', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-        $table->foreignId('attendance_id')->constrained()->cascadeOnDelete();
-        $table->time('request_clock_in');
-        $table->time('request_clock_out')->nullable();
-        $table->text('note')->nullable();
-        $table->integer('status')->default(0);
+            $table->foreignId('attendance_id')->constrained()->cascadeOnDelete();
+            $table->time('request_clock_in');
+            $table->time('request_clock_out')->nullable();
+            $table->text('note')->nullable();
+            $table->integer('status')->default(0);
             $table->timestamps();
         });
     }

@@ -28,6 +28,13 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Fortify::loginView(function (Request $request) {
+            if ($request->is('admin/login') || $request->is('admin/*')) {
+                return view('auth.admin.login'); 
+            }
+            return view('auth.login');
+        });
+
         Fortify::createUsersUsing(CreateNewUser::class);
         Fortify::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);
         Fortify::updateUserPasswordsUsing(UpdateUserPassword::class);
@@ -47,12 +54,16 @@ class FortifyServiceProvider extends ServiceProvider
         return view('auth.register');
     });
 
-        Fortify::loginView(function () {
-        return view('auth.login');
-    });
 
         Fortify::verifyEmailView(function () {
         return view('auth.verify-email');
+    });
+
+        Fortify::redirects('login', function ($request) {
+            if (auth()->user()->is_admin) {
+            return '/admin/attendance/list';
+        }
+        return '/attendance';
     });
 
     }

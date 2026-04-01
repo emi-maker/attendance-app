@@ -5,8 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Attendance;
 use App\Models\BreakTime;
-use App\Models\AttendanceCorrection;
-use App\Http\Requests\AttendanceRequest;
+use App\Models\AttendanceRequest;
 
 class AttendanceController extends Controller
 {
@@ -143,16 +142,15 @@ class AttendanceController extends Controller
         return view('attendance.detail', compact('attendance'));
     }
     
-    public function update(AttendanceRequest $request, $id)
+    public function update(Request $request, $id)
     {
-        dd('きてる');
-    AttendanceCorrection::create([
-        'user_id' => auth()->id(),
-        'attendance_id' => $id,
-        'request_clock_in' => $request->request_clock_in,
-        'request_clock_out' => $request->request_clock_out,
-        'note' => $request->note,
-        'status' => 0,
+        AttendanceRequest::create([
+            'user_id' => auth()->id(),
+            'attendance_id' => $id,
+            'request_clock_in' => $request->request_clock_in,
+            'request_clock_out' => $request->request_clock_out,
+            'note' => $request->note,
+            'status' => 0,
     ]);
 
     return redirect('/attendance/list');
