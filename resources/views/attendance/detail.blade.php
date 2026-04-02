@@ -8,6 +8,8 @@
 
 <form action="/attendance/update/{{ $attendance->id }}" method="POST">
     @csrf
+
+    @foreach ($attendances as $attendance) 
     <table>
         <tr>
             <th>名前</th>
@@ -33,5 +35,6 @@
 
     <button type="submit">修正申請</button>
 </form>
+
 
 @endsection

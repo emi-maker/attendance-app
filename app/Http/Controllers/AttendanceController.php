@@ -11,11 +11,14 @@ class AttendanceController extends Controller
 {
     public function index()
     {
+        if (auth()->user()->is_admin) {
+        return redirect('/admin/attendance/list');
+    }
         $todayAttendance = Attendance::where('user_id', auth()->id())
         ->whereDate('work_date', now()->toDateString())
         ->first();
 
-    return view('attendance.index', compact('todayAttendance'));
+        return view('attendance.index', compact('todayAttendance'));
     }
 
     public function start()
@@ -95,45 +98,55 @@ class AttendanceController extends Controller
     return redirect('/attendance');
     }
 
-    public function list()
+    public function adminList()
     {
-        $attendances = Attendance::where('user_id', auth()->id())
-        ->orderBy('work_date', 'desc')
-        ->get();
+    $attendances = Attendance::orderBy('work_date', 'desc')->get();
 
-        foreach ($attendances as $attendance) {
-        //休憩合計
-        $totalBreak = 0;
-
-        foreach ($attendance->breakTimes as $break) {
-
-            if ($break->break_end) {
-                $start = strtotime($break->break_start);
-                $end = strtotime($break->break_end);
-
-                $totalBreak += ($end - $start);
-            }
-        }
-
-        $attendance->total_break = $totalBreak;
-
-        //勤務合計
-        if ($attendance->clock_in && $attendance->clock_out) {
-
-            $workStart = strtotime($attendance->clock_in);
-            $workEnd = strtotime($attendance->clock_out);
-
-            $workSeconds = $workEnd - $workStart;
-
-            $attendance->total_work = $workSeconds - $attendance->total_break;
-
-        } else {
-            $attendance->total_work = 0;
-        }
+    foreach ($attendances as $attendance) {
+        $this->calculateWorkTime($attendance);
     }
 
     return view('admin.attendance.list', compact('attendances'));
     }
+
+    public function userList()
+    {
+    $attendances = Attendance::where('user_id', auth()->id())
+        ->orderBy('work_date', 'desc')
+        ->get();
+
+    foreach ($attendances as $attendance) {
+        $this->calculateWorkTime($attendance);
+    }
+
+    return view('attendance.list', compact('attendances'));
+    }
+
+    private function calculateWorkTime($attendance)
+    {
+    $totalBreak = 0;
+
+    foreach ($attendance->breakTimes as $break) {
+        if ($break->break_end) {
+            $start = strtotime($break->break_start);
+            $end = strtotime($break->break_end);
+            $totalBreak += ($end - $start);
+        }
+    }
+
+    $attendance->total_break = $totalBreak;
+
+    if ($attendance->clock_in && $attendance->clock_out) {
+        $workStart = strtotime($attendance->clock_in);
+        $workEnd = strtotime($attendance->clock_out);
+
+        $workSeconds = $workEnd - $workStart;
+        $attendance->total_work = $workSeconds - $attendance->total_break;
+    } else {
+        $attendance->total_work = 0;
+    }
+
+}
 
     //詳細（データ取ってくる）
     public function show($id)
@@ -153,6 +166,6 @@ class AttendanceController extends Controller
             'status' => 0,
     ]);
 
-    return redirect('/attendance/list');
+    return redirect('/attendance');
     }
 }

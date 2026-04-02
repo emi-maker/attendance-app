@@ -23,13 +23,8 @@ Route::get('/', function () {
     return redirect('/login');
 });    
 
-// 管理者ログイン画面表示
-Route::get('/admin/login', function () {
-    return view('auth.admin.login');
-});
-
 // 管理者・勤怠一覧画面
-Route::get('/admin/attendance/list',[AttendanceController::class, 'list']);
+Route::get('/admin/attendance/list',[AttendanceController::class, 'adminlist']);
 
 
 
@@ -46,13 +41,10 @@ Route::post('/attendance/break/end', [AttendanceController::class, 'breakEnd']);
 Route::post('/attendance/end', [AttendanceController::class, 'end']);
 
 //一覧処理
-Route::get('/attendance/list', [AttendanceController::class, 'list']);
+Route::get('/attendance/list', [AttendanceController::class, 'userlist']);
 
 //勤怠詳細
 Route::get('/attendance/detail/{id}', [AttendanceController::class, 'show']);
 
 //勤怠修正
-Route::post('/attendance/update/{id}', [AttendanceController::class, 'update']);
-
-//修正申請
 Route::post('/attendance/update/{id}', [AttendanceController::class, 'update']);
