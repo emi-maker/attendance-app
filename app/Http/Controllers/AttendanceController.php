@@ -98,18 +98,27 @@ class AttendanceController extends Controller
     return redirect('/attendance');
     }
 
-    public function adminList()
+    public function adminlist(Request $request)
     {
-    $attendances = Attendance::orderBy('work_date', 'desc')->get();
+        $date = $request->input('date', now()->toDateString());
+        
+        $month = $request->input('month', now()->format('Y-m'));
 
-    foreach ($attendances as $attendance) {
+        $attendances = Attendance::with('user')
+        ->whereYear('work_date', substr($month, 0, 4))
+        ->whereMonth('work_date', substr($month, 5, 2))
+        ->orderBy('work_date', 'desc')
+        ->get();
+
+        foreach ($attendances as $attendance) {
         $this->calculateWorkTime($attendance);
-    }
+        }
 
-    return view('admin.attendance.list', compact('attendances'));
+        return view('admin.attendance.list', compact('attendances', 'date'));
     }
+    
 
-    public function userList()
+    public function userlist()
     {
     $attendances = Attendance::where('user_id', auth()->id())
         ->orderBy('work_date', 'desc')

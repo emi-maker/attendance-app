@@ -65,3 +65,59 @@
 .resend-link {
   margin-top: 10px;
 }
+
+
+/*一覧共通スタイル*/
+
+body {
+    background-color: #f0f0f0;
+}
+
+.container {
+  width: 900px;
+  margin: 0 auto;
+}
+
+.card {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.card-header {
+  margin-bottom: 20px;
+}
+
+.date-card {
+  background-color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+
+.attendance-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.attendance-table th,
+.attendance-table td {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+
+.date-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+
+.attendance-title {
+  margin: 50px 0;
+  border-left: 5px solid black;
+  padding-left: 10px;
+  font-size: 20px;
+}
