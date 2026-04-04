@@ -13,7 +13,7 @@
 
 </head>
 
-<body>
+<body class="@yield('body-class')">
     <header class="header">
         <div class="header__inner">
             <a class="header__logo" href="/">

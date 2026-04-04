@@ -1,32 +1,32 @@
 .header {
-    background: #000;
+  background: #000;
 }
 
 .header__inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .header-nav {
-    display: flex;
-    gap: 30px;
-    align-items: center;
+  display: flex;
+  gap: 30px;
+  align-items: center;
 }
 
 .header-nav a {
-    color: #fff;
-    text-decoration: none;
+  color: #fff;
+  text-decoration: none;
 }
 
 .header-nav button {
-    background: none;
-    border: none;
-    color: #fff;
-    cursor: pointer;
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
 }
 
 .verify-container {
@@ -70,7 +70,7 @@
 /*一覧共通スタイル*/
 
 body {
-    background-color: #f0f0f0;
+  background-color: #f0f0f0;
 }
 
 .container {

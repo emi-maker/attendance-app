@@ -118,18 +118,26 @@ class AttendanceController extends Controller
     }
     
 
-    public function userlist()
+    public function userlist(Request $request)
     {
-    $attendances = Attendance::where('user_id', auth()->id())
+        $month = $request->input('month', now()->format('Y-m'));
+        
+        //前月・翌月
+        $prevMonth = \Carbon\Carbon::parse($month)->subMonth()->format('Y-m');
+        $nextMonth = \Carbon\Carbon::parse($month)->addMonth()->format('Y-m');
+
+        $attendances = Attendance::where('user_id', auth()->id())
+        ->whereYear('work_date', substr($month, 0, 4))
+        ->whereMonth('work_date', substr($month, 5, 2))
         ->orderBy('work_date', 'desc')
         ->get();
-
-    foreach ($attendances as $attendance) {
-        $this->calculateWorkTime($attendance);
+        
+        foreach ($attendances as $attendance) {
+            $this->calculateWorkTime($attendance);
     }
 
-    return view('attendance.list', compact('attendances'));
-    }
+    return view('attendance.list', compact('attendances', 'month'));
+}   
 
     private function calculateWorkTime($attendance)
     {

@@ -10,16 +10,16 @@
 <div class="container">
 
     <h1 class="attendance-title">
-        {{ \Carbon\Carbon::parse($date)->format('Y年n月j日') }}勤怠一覧</h1>
+        {{ \Carbon\Carbon::parse($month)->format('Y年n月j日') }}勤怠一覧</h1>
     </h1>
     <div class="date-card">
         <div class="date-nav">
-            <a href="?date={{\Carbon\Carbon::parse($date)->subDay()->toDateString() }}">← 前月</a>
+            <a href="?month={{\Carbon\Carbon::parse($month)->subMonth()->format('Y-m') }}">← 前月</a>
 
             <div class="date-center">
-                2023/06
+                {{ \Carbon\Carbon::parse($month)->format('Y/m') }}
             </div>
-            <a href="?date={{ \Carbon\Carbon::parse($date)->addDay()->toDateString() }}">翌月 →</a>
+            <a href="?month={{ \Carbon\Carbon::parse($month)->addMonth()->format('Y-m') }}">翌月 →</a>
         </div>
     </div>
 
@@ -34,14 +34,15 @@
                 <th>勤務時間</th>
             </tr>
 
-            <!-- 仮データ -->
-            <tr>
-                <td>06/01</td>
-                <td>09:00</td>
-                <td>18:00</td>
-                <td>01:00</td>
-                <td>08:00</td>
-            </tr>
+           @foreach ($attendances as $attendance)
+        <tr>
+            <td>{{ \Carbon\Carbon::parse($attendance->work_date)->format('m/d') }}</td>
+            <td>{{ $attendance->clock_in ? \Carbon\Carbon::parse($attendance->clock_in)->format('H:i') : '' }}</td>
+            <td>{{ $attendance->clock_out ? \Carbon\Carbon::parse($attendance->clock_out)->format('H:i') : '' }}</td>
+            <td>{{ $attendance->break_time ?? '' }}</td>
+            <td>{{ $attendance->work_time ?? '' }}</td>
+        </tr>
+        @endforeach
 
         </table>
     </div>

@@ -4,6 +4,8 @@
 <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
 @endsection
 
+@section('body-class', 'admin-page')
+
 @section('content')
 <div class="auth-card">
     <h1>管理者ログイン</h1>
