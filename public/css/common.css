@@ -99,12 +99,14 @@ body {
 .attendance-table {
   width: 100%;
   border-collapse: collapse;
+  table-layout: fixed; 
 }
 
 .attendance-table th,
 .attendance-table td {
   padding: 10px;
   border-bottom: 1px solid #ccc;
+  text-align: center; 
 }
 
 

@@ -11,7 +11,7 @@
 
     <h1 class="attendance-title">
         {{ \Carbon\Carbon::parse($month)->format('Y年n月j日') }}勤怠一覧</h1>
-    </h1>
+        
     <div class="date-card">
         <div class="date-nav">
             <a href="?month={{\Carbon\Carbon::parse($month)->subMonth()->format('Y-m') }}">← 前月</a>
@@ -31,16 +31,40 @@
                 <th>出勤</th>
                 <th>退勤</th>
                 <th>休憩</th>
-                <th>勤務時間</th>
+                <th>合計</th>
+                <th>詳細</th>
             </tr>
 
-           @foreach ($attendances as $attendance)
+           @foreach ($dates as $date)
+           @php
+                $attendance = $attendances->firstWhere('work_date', $date->format('Y-m-d'));
+            @endphp
         <tr>
-            <td>{{ \Carbon\Carbon::parse($attendance->work_date)->format('m/d') }}</td>
-            <td>{{ $attendance->clock_in ? \Carbon\Carbon::parse($attendance->clock_in)->format('H:i') : '' }}</td>
-            <td>{{ $attendance->clock_out ? \Carbon\Carbon::parse($attendance->clock_out)->format('H:i') : '' }}</td>
+            <td>
+            {{ $date->format('m/d') }}
+            ({{ $date->locale('ja')->isoFormat('ddd') }})
+            </td>
+            
+            <td>
+                {{ $attendance && $attendance->clock_in ? \Carbon\Carbon::parse($attendance->clock_in)->format('H:i') : '' }}
+            </td>
+            
+            <td>
+                {{ $attendance && $attendance->clock_out ? \Carbon\Carbon::parse($attendance->clock_out)->format('H:i') : '' }}
+            </td>
+
             <td>{{ $attendance->break_time ?? '' }}</td>
-            <td>{{ $attendance->work_time ?? '' }}</td>
+            <td>
+                {{ $attendance && $attendance->work_time
+                ? floor($attendance->work_time / 60) . '時間'
+                : '' }}
+            </td>
+
+            <td>
+                @if ($attendance)
+                <a href="/attendance/detail/{{ $attendance->id }}">詳細</a>
+                @endif
+            </td>
         </tr>
         @endforeach
 

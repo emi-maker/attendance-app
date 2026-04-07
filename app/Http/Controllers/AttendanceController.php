@@ -121,6 +121,17 @@ class AttendanceController extends Controller
     public function userlist(Request $request)
     {
         $month = $request->input('month', now()->format('Y-m'));
+
+        //日付作る
+        $start = \Carbon\Carbon::parse($month)->startOfMonth();
+        $end = \Carbon\Carbon::parse($month)->endOfMonth();
+
+        $dates = [];
+
+        while ($start <= $end) {
+            $dates[] = $start->copy();
+            $start->addDay();
+    }
         
         //前月・翌月
         $prevMonth = \Carbon\Carbon::parse($month)->subMonth()->format('Y-m');
@@ -129,14 +140,19 @@ class AttendanceController extends Controller
         $attendances = Attendance::where('user_id', auth()->id())
         ->whereYear('work_date', substr($month, 0, 4))
         ->whereMonth('work_date', substr($month, 5, 2))
-        ->orderBy('work_date', 'desc')
+        ->orderBy('work_date', 'asc')
         ->get();
         
-        foreach ($attendances as $attendance) {
-            $this->calculateWorkTime($attendance);
+        foreach ($attendances as $attendance) {    
+            if ($attendance->clock_in && $attendance->clock_out) {
+                $start = \Carbon\Carbon::parse($attendance->clock_in);
+                $end = \Carbon\Carbon::parse($attendance->clock_out);
+
+                $attendance->work_time = $end->diffInMinutes($start);
+            }
     }
 
-    return view('attendance.list', compact('attendances', 'month'));
+    return view('attendance.list', compact('attendances', 'month','dates'));
 }   
 
     private function calculateWorkTime($attendance)
