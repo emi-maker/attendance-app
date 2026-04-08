@@ -5,13 +5,15 @@
 @endsection
 
 @section('content')
-
-
 <div class="container">
 
-    <h1 class="attendance-title">
-        {{ \Carbon\Carbon::parse($month)->format('Y年n月j日') }}勤怠一覧</h1>
-        
+    <div class="content-wrapper">
+        <div class="title-area">
+            <div class="line"></div>
+        <h1 class="detail-title">勤怠一覧</h1>
+    </div>
+</div>
+
     <div class="date-card">
         <div class="date-nav">
             <a href="?month={{\Carbon\Carbon::parse($month)->subMonth()->format('Y-m') }}">← 前月</a>
@@ -35,38 +37,38 @@
                 <th>詳細</th>
             </tr>
 
-           @foreach ($dates as $date)
-           @php
-                $attendance = $attendances->firstWhere('work_date', $date->format('Y-m-d'));
+            @foreach ($dates as $date)
+            @php
+            $attendance = $attendances->firstWhere('work_date', $date->format('Y-m-d'));
             @endphp
-        <tr>
-            <td>
-            {{ $date->format('m/d') }}
-            ({{ $date->locale('ja')->isoFormat('ddd') }})
-            </td>
-            
-            <td>
-                {{ $attendance && $attendance->clock_in ? \Carbon\Carbon::parse($attendance->clock_in)->format('H:i') : '' }}
-            </td>
-            
-            <td>
-                {{ $attendance && $attendance->clock_out ? \Carbon\Carbon::parse($attendance->clock_out)->format('H:i') : '' }}
-            </td>
+            <tr>
+                <td>
+                    {{ $date->format('m/d') }}
+                    ({{ $date->locale('ja')->isoFormat('ddd') }})
+                </td>
 
-            <td>{{ $attendance->break_time ?? '' }}</td>
-            <td>
-                {{ $attendance && $attendance->work_time
-                ? floor($attendance->work_time / 60) . '時間'
-                : '' }}
-            </td>
+                <td>
+                    {{ $attendance && $attendance->clock_in ?
+                    \Carbon\Carbon::parse($attendance->clock_in)->format('H:i') : '' }}
+                </td>
 
-            <td>
-                @if ($attendance)
-                <a href="/attendance/detail/{{ $attendance->id }}">詳細</a>
-                @endif
-            </td>
-        </tr>
-        @endforeach
+                <td>
+                    {{ $attendance && $attendance->clock_out ?
+                    \Carbon\Carbon::parse($attendance->clock_out)->format('H:i') : '' }}
+                </td>
+                <td>
+                    {{ $attendance ? $attendance->break_formatted : '' }}
+                </td>
+                <td>
+                    {{ $attendance ? $attendance->work_formatted : '' }}
+                </td>
+                <td>
+                    @if ($attendance)
+                    <a href="/attendance/detail/{{ $attendance->id }}">詳細</a>
+                    @endif
+                </td>
+            </tr>
+            @endforeach
 
         </table>
     </div>

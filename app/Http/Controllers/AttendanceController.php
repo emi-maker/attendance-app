@@ -137,23 +137,52 @@ class AttendanceController extends Controller
         $prevMonth = \Carbon\Carbon::parse($month)->subMonth()->format('Y-m');
         $nextMonth = \Carbon\Carbon::parse($month)->addMonth()->format('Y-m');
 
-        $attendances = Attendance::where('user_id', auth()->id())
+        $attendances = Attendance::with('breaks')
+        ->where('user_id', auth()->id())
         ->whereYear('work_date', substr($month, 0, 4))
         ->whereMonth('work_date', substr($month, 5, 2))
         ->orderBy('work_date', 'asc')
         ->get();
         
-        foreach ($attendances as $attendance) {    
-            if ($attendance->clock_in && $attendance->clock_out) {
-                $start = \Carbon\Carbon::parse($attendance->clock_in);
-                $end = \Carbon\Carbon::parse($attendance->clock_out);
+        foreach ($attendances as $attendance) { 
+            
+            // 勤務時間（分）
+            $workMinutes = 0;
 
-                $attendance->work_time = $end->diffInMinutes($start);
-            }
-    }
+            if ($attendance->clock_in &&            $attendance->clock_out) {
+            $start = \Carbon\Carbon::parse($attendance->clock_in);
+            $end = \Carbon\Carbon::parse($attendance->clock_out);
 
-    return view('attendance.list', compact('attendances', 'month','dates'));
-}   
+            $workMinutes = $end->diffInMinutes($start);
+        }
+
+            // 休憩時間（分）
+            $breakMinutes = 0;
+
+            foreach ($attendance->breaks as $break) {
+                $bStart = \Carbon\Carbon::parse($break->break_start);
+                $bEnd = \Carbon\Carbon::parse($break->break_end);
+                $breakMinutes += $bEnd->diffInMinutes($bStart);
+        }
+            
+            // 合計
+            $attendance->total_break = $breakMinutes;
+            $attendance->total_work = $workMinutes - $breakMinutes;
+            
+            // 休憩フォーマット
+            $attendance->break_formatted =
+            floor($attendance->total_break / 60) . ':' .
+            str_pad($attendance->total_break % 60, 2, '0', STR_PAD_LEFT);
+
+            // 勤務フォーマット
+            $attendance->work_formatted =
+            floor($attendance->total_work / 60) . ':' .
+            str_pad($attendance->total_work % 60, 2, '0', STR_PAD_LEFT);
+
+        }
+
+        return view('attendance.list', compact('attendances', 'month','dates'));
+    }   
 
     private function calculateWorkTime($attendance)
     {
@@ -184,7 +213,8 @@ class AttendanceController extends Controller
     //詳細（データ取ってくる）
     public function show($id)
     {
-        $attendance = Attendance::find($id);
+        $attendance = Attendance::with('breaks')->find($id);
+
         return view('attendance.detail', compact('attendance'));
     }
     
