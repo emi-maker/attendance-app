@@ -2,19 +2,19 @@
 
 @section('css')
 <link rel="stylesheet" href="{{ asset('css/common.css') }}">
+<link rel="stylesheet" href="{{ asset('css/attendance.css') }}">
 @endsection
 
 @section('content')
-<div class="container">
 
-    <div class="content-wrapper">
-        <div class="title-area">
-            <div class="line"></div>
+<div class="detail-container">
+    <div class="title-area">
+        <div class="line"></div>
         <h1 class="detail-title">勤怠一覧</h1>
     </div>
-</div>
 
-    <div class="date-card">
+
+    <div class="date-card attendance-box">
         <div class="date-nav">
             <a href="?month={{\Carbon\Carbon::parse($month)->subMonth()->format('Y-m') }}">← 前月</a>
 
@@ -25,7 +25,7 @@
         </div>
     </div>
 
-    <div class="card">
+    <div class="card attendance-box">
         <table class="attendance-table">
 
             <tr>
@@ -70,9 +70,7 @@
             </tr>
             @endforeach
 
-        </table>
+    </table>
     </div>
-
 </div>
-
 @endsection

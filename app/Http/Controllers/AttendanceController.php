@@ -229,6 +229,6 @@ class AttendanceController extends Controller
             'status' => 0,
     ]);
 
-    return redirect('/attendance');
+    return redirect('/attendance/detail/' . $id);
     }
 }

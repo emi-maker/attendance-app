@@ -49,4 +49,4 @@ Route::get('/attendance/list', [AttendanceController::class, 'userlist']);
 Route::get('/attendance/detail/{id}', [AttendanceController::class, 'show']);
 
 //勤怠修正
-Route::post('/attendance/update/{id}', [AttendanceController::class, 'update']);
+Route::put('/attendance/update/{id}', [AttendanceController::class, 'update']);

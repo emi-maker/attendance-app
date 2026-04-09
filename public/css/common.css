@@ -95,6 +95,10 @@ body {
   margin-bottom: 20px;
 }
 
+.box {
+    width: 80%;
+    margin: 0 auto 20px;
+}
 
 .attendance-table {
   width: 100%;
