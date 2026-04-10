@@ -15,6 +15,6 @@ class AttendanceRequest extends Model
         'request_clock_in',
         'request_clock_out',
         'note',
-        'status',
+        'request_status',
     ];
 }

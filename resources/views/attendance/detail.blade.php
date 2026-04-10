@@ -85,21 +85,28 @@
     <tr>
         <th>備考</th>
         <td>
-            <textarea name="note" rows="3">
+            <textarea name="note" rows="3"
+                {{ $attendance->status === 1 ? 'disabled' : '' }}>
                 {{ $attendance->note ?? '' }}
             </textarea>
         </td>
     </tr>
     </table>
 </div>
-@if ($attendance->status === 0)
+
+@if (!($attendance->request && $attendance->request->request_status == 1))
+    <div class="button-area">
+        <button type="submit" class="submit-btn">修正</button>
+    </div>
+@endif
+
+</form>
+
+@if ($attendance->request && $attendance->request->request_status === 1)
 <p style="color:red;">
     ※承認待ちのため修正はできません。
 </p>
-@else
-<div class="button-area">
-    <button type="submit" class="submit-btn">修正</button>
+
 @endif
-</div>
-</form>
+
 @endsection

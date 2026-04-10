@@ -226,9 +226,10 @@ class AttendanceController extends Controller
             'request_clock_in' => $request->request_clock_in,
             'request_clock_out' => $request->request_clock_out,
             'note' => $request->note,
-            'status' => 0,
+            'request_status' => 1,
     ]);
 
-    return redirect('/attendance/detail/' . $id);
+    return redirect('/attendance/detail/' . $id)
+    ->with('message', '※修正申請を送信しました');
     }
 }

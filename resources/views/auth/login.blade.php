@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
 @endsection
 
-@section('body-class', 'login-page')
+@section('body-class', 'auth-page')
 
 @section('content')
 <div class="auth-card">

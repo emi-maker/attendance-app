@@ -1,7 +1,6 @@
 .auth-card {
     width: 500px;
-    margin: 80px auto;
-    
+    margin: 80px auto;   
 }
 
 .auth-card h1 {
@@ -66,10 +65,7 @@
     color: #000;
 }
 
-.login-page {
+body.auth-page {
   background-color: white;
 }
 
-.admin-page {
-  background-color: white;
-}

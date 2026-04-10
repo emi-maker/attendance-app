@@ -4,8 +4,10 @@
 <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
 @endsection
 
+@section('body-class', 'auth-page')
+
 @section('content')
-<div class="auth-card">
+<div class="auth-card card">
     <h1>会員登録</h1>
     <form method="POST" action="/register" novalidate>
         @csrf
