@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Attendance;
 use App\Models\BreakTime;
 use App\Models\AttendanceRequest;
+use App\Models\BreakRequest;
 
 class AttendanceController extends Controller
 {
@@ -211,25 +212,63 @@ class AttendanceController extends Controller
 }
 
     //詳細（データ取ってくる）
-    public function show($id)
-    {
-        $attendance = Attendance::with('breaks')->find($id);
+    public function show($date)
+    {   
+        $attendance = Attendance::with('breaks')
+        ->firstOrCreate(
+            [
+                'user_id' => auth()->id(),
+                'work_date' => $date,
+            ]
+        );
 
-        return view('attendance.detail', compact('attendance'));
+       $request = AttendanceRequest::with('breakRequests')
+        ->where('attendance_id', $attendance->id)
+        ->latest()
+        ->first();
+
+
+        return view('attendance.detail', compact('attendance', 'request','date'));    
     }
-    
-    public function update(Request $request, $id)
+
+    public function update(Request $request, $date)
     {
-        AttendanceRequest::create([
+        $attendance = Attendance::where('work_date', $date)
+        ->where('user_id', auth()->id())
+        ->first();
+
+        $attendanceRequest = AttendanceRequest::create([
             'user_id' => auth()->id(),
-            'attendance_id' => $id,
+            'attendance_id' => optional($attendance)->id,
             'request_clock_in' => $request->request_clock_in,
             'request_clock_out' => $request->request_clock_out,
             'note' => $request->note,
             'request_status' => 1,
     ]);
 
-    return redirect('/attendance/detail/' . $id)
+        BreakRequest::create([
+            'user_id' => auth()->id(),
+            'attendance_id' => optional($attendance)->id,
+            'attendance_request_id' => $attendanceRequest->id,
+            'break_start' => $request->break_start[0] ?? null,
+            'break_end' => $request->break_end[0] ?? null,
+        'status' => 0,
+    ]);
+
+        return redirect('/attendance/detail/' . $date)
     ->with('message', '※修正申請を送信しました');
+    }
+
+
+    public function store(Request $request)
+    {
+        Attendance::create([
+            'user_id' => auth()->id(),
+            'work_date' => $request->work_date,
+            'clock_in' => $request->request_clock_in,
+            'clock_out' => $request->request_clock_out,
+        ]);
+
+        return redirect('/attendance/detail/'. $request->work_date);
     }
 }

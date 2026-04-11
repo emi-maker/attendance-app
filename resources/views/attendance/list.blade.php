@@ -63,9 +63,7 @@
                     {{ $attendance ? $attendance->work_formatted : '' }}
                 </td>
                 <td>
-                    @if ($attendance)
-                    <a href="/attendance/detail/{{ $attendance->id }}">詳細</a>
-                    @endif
+                    <a href="/attendance/detail/{{ $date->format('Y-m-d') }}">詳細</a>
                 </td>
             </tr>
             @endforeach

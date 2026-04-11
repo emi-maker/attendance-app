@@ -17,4 +17,9 @@ class AttendanceRequest extends Model
         'note',
         'request_status',
     ];
+
+    public function breakRequests()
+    {
+        return $this->hasMany(BreakRequest::class ,'attendance_request_id');
+    }   
 }

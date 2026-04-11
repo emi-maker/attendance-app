@@ -46,7 +46,9 @@ Route::post('/attendance/end', [AttendanceController::class, 'end']);
 Route::get('/attendance/list', [AttendanceController::class, 'userlist']);
 
 //勤怠詳細
-Route::get('/attendance/detail/{id}', [AttendanceController::class, 'show']);
+Route::get('/attendance/detail/{date}', [AttendanceController::class, 'show']);
 
 //勤怠修正
-Route::put('/attendance/update/{id}', [AttendanceController::class, 'update']);
+Route::put('/attendance/update/{date}', [AttendanceController::class, 'update']);
+
+Route::post('/attendance/store', [AttendanceController::class, 'store']);
