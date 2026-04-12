@@ -51,22 +51,25 @@
                             <div class="break-row">
 
                                 <input type="time" name="request_clock_in" value="{{ 
-                                        $request && $request->clock_in 
-                                        ? \Carbon\Carbon::parse($request->clock_in)->format('H:i') 
-                                        : ($attendance && $attendance->clock_in 
-                                            ? \Carbon\Carbon::parse($attendance->clock_in)->format('H:i') 
-                                            : '') 
-                                    }}">
+                                        $request && $request->request_clock_in 
+                                    ? \Carbon\Carbon::parse($request->request_clock_in)->format('H:i') 
+                                    : ($attendance && $attendance->clock_in 
+                                    ? \Carbon\Carbon::parse($attendance->clock_in)->format('H:i') 
+                                    : '') 
+                                    }}"
 
                                 <span class="tilde">〜</span>
 
-                                <input type="time" name="request_clock_out" value="{{ 
-                                    $request && $request->clock_out 
-                                    ? \Carbon\Carbon::parse($request->clock_out)->format('H:i') 
+                                <input type="time" name="request_clock_out" 
+                                value="{{
+                                    $request && $request->request_clock_out 
+                                    ? \Carbon\Carbon::parse($request->request_clock_out)->format('H:i') 
                                     : ($attendance && $attendance->clock_out 
-                                        ? \Carbon\Carbon::parse($attendance->clock_out)->format('H:i') 
-                                        : '') 
-                                }}">
+                                    ? \Carbon\Carbon::parse($attendance->clock_out)->format('H:i') 
+                                    : '') 
+                                    }}"
+                                    
+                                    
                             </div>
                         </td>
                     </tr>
@@ -77,17 +80,18 @@
                     : $attendance->breaks;
                     @endphp
 
-                    @foreach ($attendance->breaks ?? [] as $index => $break)
+                    @foreach ($breaks ?? [] as $index => $break)
                     <th>
                         休憩{{ $index === 0 ? '' : $index + 1 }}
                     </th>
                     <td>
                         <div class="break-row">
-                            <input type="time" value="{{ \Carbon\Carbon::parse($break->break_start)->format('H:i') }}">
+                            <input type="time" name="breaks[{{ $index }}][break_start]" value="{{ is_array($break) ? $break['break_start'] :\Carbon\Carbon::parse($break->break_start)->format('H:i') }}">
 
                             <span class="tilde">〜</span>
 
-                            <input type="time" value="{{ \Carbon\Carbon::parse($break->break_end)->format('H:i') }}">
+                            <input type="time" name="breaks[{{ $index }}][break_end]"
+                                value="{{ is_array($break) ? $break['break_end'] : \Carbon\Carbon::parse($break->break_end)->format('H:i') }}">
                         </div>
                     </td>
                     </tr>
@@ -98,11 +102,11 @@
                         <td>
 
                             <div class="break-row">
-                                <input type="time" name="break_start[]">
+                                <input type="time" name="breaks[{{ count($breaks ?? []) }}][break_start]">
 
                                 <span class="tilde">〜</span>
 
-                                <input type="time" name="break_end[]">
+                                <input type="time" name="breaks[{{ count($breaks ?? []) }}][break_end]">
                             </div>
                         </td>
                     </tr>

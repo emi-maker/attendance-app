@@ -26,9 +26,13 @@ Route::get('/', function () {
 // 管理者・勤怠一覧画面
 Route::get('/admin/attendance/list',[AttendanceController::class, 'adminlist']);
 
+//ログイン画面
 Route::get('/admin/login', function () {
     return view('auth.admin.login');
 });
+
+// ログイン処理
+Route::post('/admin/login', [AdminAuthController::class, 'login']);
 
 //出勤処理 
 Route::post('/attendance/start', [AttendanceController::class, 'start']);

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class DropAdminsTable extends Migration
+class DropBreakIdFromBreakRequestsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,9 @@ class DropAdminsTable extends Migration
      */
     public function up()
     {
-        //Schema::dropIfExists('admins');
+        Schema::table('break_requests', function (Blueprint $table) {
+             $table->dropColumn('break_id');
+        });
     }
 
     /**
@@ -23,9 +25,8 @@ class DropAdminsTable extends Migration
      */
     public function down()
     {
-        Schema::create('admins', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::table('break_requests', function (Blueprint $table) {
+            $table->unsignedBigInteger('break_id')->nullable();
         });
     }
 }

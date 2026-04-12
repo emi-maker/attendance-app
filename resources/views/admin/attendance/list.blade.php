@@ -36,7 +36,7 @@
             <th>詳細</th>
         </tr>
 
-        @foreach ($attendances as $attendance)
+        @foreach ($attendances ?? [] as $attendance)
 
         <tr>
             <td>{{ $attendance->user->name }}</td>

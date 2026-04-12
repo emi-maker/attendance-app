@@ -101,21 +101,18 @@ class AttendanceController extends Controller
 
     public function adminlist(Request $request)
     {
+        
         $date = $request->input('date', now()->toDateString());
         
-        $month = $request->input('month', now()->format('Y-m'));
-
         $attendances = Attendance::with('user')
-        ->whereYear('work_date', substr($month, 0, 4))
-        ->whereMonth('work_date', substr($month, 5, 2))
-        ->orderBy('work_date', 'desc')
+        ->whereDate('work_date', $date)
         ->get();
 
         foreach ($attendances as $attendance) {
-        $this->calculateWorkTime($attendance);
+            $this->calculateWorkTime($attendance);
         }
 
-        return view('admin.attendance.list', compact('attendances', 'date'));
+            return view('admin.attendance.list', compact('attendances', 'date'));
     }
     
 
@@ -189,7 +186,7 @@ class AttendanceController extends Controller
     {
     $totalBreak = 0;
 
-    foreach ($attendance->breakTimes as $break) {
+    foreach ($attendance->breakTimes ?? []as $break) {
         if ($break->break_end) {
             $start = strtotime($break->break_start);
             $end = strtotime($break->break_end);
@@ -245,6 +242,16 @@ class AttendanceController extends Controller
             'note' => $request->note,
             'request_status' => 1,
     ]);
+
+        foreach ($request->breaks as $break) {
+            BreakRequest::create([
+                'user_id' => auth()->id(),
+                'attendance_id' => optional($attendance)->id,
+                'attendance_request_id' => $attendanceRequest->id,
+                'break_start' => $break['break_start'],
+                'break_end' => $break['break_end'],
+    ]);
+}
 
         BreakRequest::create([
             'user_id' => auth()->id(),
