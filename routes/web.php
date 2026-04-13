@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\LoginController;
-
+use App\Http\Controllers\AttendanceRequestController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -56,3 +56,5 @@ Route::get('/attendance/detail/{date}', [AttendanceController::class, 'show']);
 Route::put('/attendance/update/{date}', [AttendanceController::class, 'update']);
 
 Route::post('/attendance/store', [AttendanceController::class, 'store']);
+
+Route::get('/stamp_correction_request/list', [AttendanceRequestController::class, 'index']);

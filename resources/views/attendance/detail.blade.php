@@ -51,8 +51,8 @@
                             <div class="break-row">
 
                                 <input type="time" name="request_clock_in" value="{{ 
-                                        $request && $request->request_clock_in 
-                                    ? \Carbon\Carbon::parse($request->request_clock_in)->format('H:i') 
+                                        $attendanceRequest && $attendanceRequest->request_clock_in 
+                                    ? \Carbon\Carbon::parse($attendanceRequest->request_clock_in)->format('H:i') 
                                     : ($attendance && $attendance->clock_in 
                                     ? \Carbon\Carbon::parse($attendance->clock_in)->format('H:i') 
                                     : '') 
@@ -62,8 +62,8 @@
 
                                 <input type="time" name="request_clock_out" 
                                 value="{{
-                                    $request && $request->request_clock_out 
-                                    ? \Carbon\Carbon::parse($request->request_clock_out)->format('H:i') 
+                                    $attendanceRequest && $attendanceRequest->request_clock_out 
+                                    ? \Carbon\Carbon::parse($attendanceRequest->request_clock_out)->format('H:i') 
                                     : ($attendance && $attendance->clock_out 
                                     ? \Carbon\Carbon::parse($attendance->clock_out)->format('H:i') 
                                     : '') 
@@ -75,8 +75,8 @@
                     </tr>
 
                     @php
-                    $breaks = ($request && $request->breakRequests->count())
-                    ? $request->breakRequests
+                    $breaks = ($attendanceRequest && $attendanceRequest->breakRequests->count())
+                    ? $attendanceRequest->breakRequests
                     : $attendance->breaks;
                     @endphp
 
@@ -125,10 +125,10 @@
 </div>
 
 @php
-$requestStatus = optional(optional($attendance)->request)->request_status;
+$requestStatus = optional($attendanceRequest)->status;
 @endphp
 
-@if ($requestStatus !== 1)
+@if ($requestStatus || $requestStatus == 1)
 <div class="button-area">
     <button type="submit" class="submit-btn">修正</button>
 </div>
@@ -136,7 +136,7 @@ $requestStatus = optional(optional($attendance)->request)->request_status;
 
 </form>
 
-@if ($requestStatus === 1)
+@if ($requestStatus == 0)
 <p style="color:red;">
     ※承認待ちのため修正はできません。
 </p>

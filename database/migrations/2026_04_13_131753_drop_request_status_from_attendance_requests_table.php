@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class RenameStatusColumns extends Migration
+class DropRequestStatusFromAttendanceRequestsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,10 @@ class RenameStatusColumns extends Migration
      */
     public function up()
     {
-        Schema::table('attendances', function (Blueprint $table) {
-            $table->integer('work_status')->nullable();
-        });
-
         Schema::table('attendance_requests', function (Blueprint $table) {
-            $table->integer('request_status')->nullable();
+            $table->dropColumn('request_status');
         });
     }
-    
 
     /**
      * Reverse the migrations.
@@ -30,12 +25,8 @@ class RenameStatusColumns extends Migration
      */
     public function down()
     {
-        Schema::table('attendances', function (Blueprint $table) {
-            $table->dropColumn('work_status');
-        });
-
         Schema::table('attendance_requests', function (Blueprint $table) {
-            $table->dropColumn('request_status');
+            $table->integer('request_status')->nullable();
         });
     }
 }

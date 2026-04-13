@@ -24,7 +24,7 @@
             <nav class="header-nav">
                 <a href="/attendance">勤怠</a>
                 <a href="/attendance/list">勤怠一覧</a>
-                <a href="/attendance/request">申請</a>
+                <a href="/stamp_correction_request/list">申請</a>
 
                 <form action="/logout" method="POST">
                     @csrf

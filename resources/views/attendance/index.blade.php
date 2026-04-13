@@ -11,7 +11,7 @@
     @if (is_null($todayAttendance))
 
     <div class="attendance-status">勤務外</div>
-    
+
     <div class="attendance-date" id="today"></div>
     <div class="attendance-time" id="clock"></div>
     <form action="/attendance/start" method="POST">
@@ -30,12 +30,12 @@
         <form action="/attendance/end" method="POST">
             @csrf
             <button class="attendance-btn">退勤</button>
-        </form>    
+        </form>
 
         <form action="/attendance/break/start" method="POST">
             @csrf
             <button class="attendance-btn break-btn">休憩入</button>
-        </form>    
+        </form>
     </div>
 
     @elseif($todayAttendance->status == 2)

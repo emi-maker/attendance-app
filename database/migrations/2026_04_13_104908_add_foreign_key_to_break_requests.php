@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddAttendanceIdToBreakRequestsTable extends Migration
+class AddForeignKeyToBreakRequests extends Migration
 {
     /**
      * Run the migrations.
@@ -14,13 +14,10 @@ class AddAttendanceIdToBreakRequestsTable extends Migration
     public function up()
     {
         Schema::table('break_requests', function (Blueprint $table) {
-            $table->unsignedBigInteger('attendance_request_id')->nullable();
-
-            $table->foreign('attendance_id')
-                ->references('id')
-                ->on('attendances')
-                ->onDelete('cascade');
-
+            $table->foreign('attendance_request_id')
+            ->references('id')
+            ->on('attendance_requests')
+            ->onDelete('cascade');
         });
     }
 

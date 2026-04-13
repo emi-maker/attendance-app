@@ -219,13 +219,13 @@ class AttendanceController extends Controller
             ]
         );
 
-       $request = AttendanceRequest::with('breakRequests')
+       $attendanceRequest = AttendanceRequest::with('breakRequests')
         ->where('attendance_id', $attendance->id)
         ->latest()
         ->first();
 
 
-        return view('attendance.detail', compact('attendance', 'request','date'));    
+        return view('attendance.detail', compact('attendance', 'attendanceRequest','date'));    
     }
 
     public function update(Request $request, $date)
@@ -234,33 +234,45 @@ class AttendanceController extends Controller
         ->where('user_id', auth()->id())
         ->first();
 
-        $attendanceRequest = AttendanceRequest::create([
-            'user_id' => auth()->id(),
-            'attendance_id' => optional($attendance)->id,
+        $attendanceRequest = AttendanceRequest::where('attendance_id', optional($attendance)->id)
+    ->where('user_id', auth()->id())
+    ->first();
+
+    if ($attendanceRequest) {
+        // すでにある → 更新
+        $attendanceRequest->update([
             'request_clock_in' => $request->request_clock_in,
             'request_clock_out' => $request->request_clock_out,
             'note' => $request->note,
-            'request_status' => 1,
+            'status' => 0,
     ]);
+} else {
+    // 初回 → 作成
+    $attendanceRequest = AttendanceRequest::create([
+        'user_id' => auth()->id(),
+        'attendance_id' => optional($attendance)->id,
+        'request_clock_in' => $request->request_clock_in,
+        'request_clock_out' => $request->request_clock_out,
+        'note' => $request->note,
+        'status' => 0,
+    ]);
+}
+
+        BreakRequest::where('attendance_request_id', $attendanceRequest->id)->delete();
 
         foreach ($request->breaks as $break) {
+
+        if (!empty($break['break_start']) && !empty($break['break_end'])) {
+
             BreakRequest::create([
                 'user_id' => auth()->id(),
                 'attendance_id' => optional($attendance)->id,
                 'attendance_request_id' => $attendanceRequest->id,
                 'break_start' => $break['break_start'],
                 'break_end' => $break['break_end'],
-    ]);
+            ]);
+        }
 }
-
-        BreakRequest::create([
-            'user_id' => auth()->id(),
-            'attendance_id' => optional($attendance)->id,
-            'attendance_request_id' => $attendanceRequest->id,
-            'break_start' => $request->break_start[0] ?? null,
-            'break_end' => $request->break_end[0] ?? null,
-        'status' => 0,
-    ]);
 
         return redirect('/attendance/detail/' . $date)
     ->with('message', '※修正申請を送信しました');
