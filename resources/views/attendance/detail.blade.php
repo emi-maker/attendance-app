@@ -50,63 +50,46 @@
                         <td>
                             <div class="break-row">
 
-                                <input type="time" name="request_clock_in" value="{{ 
-                                        $attendanceRequest && $attendanceRequest->request_clock_in 
-                                    ? \Carbon\Carbon::parse($attendanceRequest->request_clock_in)->format('H:i') 
-                                    : ($attendance && $attendance->clock_in 
-                                    ? \Carbon\Carbon::parse($attendance->clock_in)->format('H:i') 
-                                    : '') 
-                                    }}"
+                                <input type="time" name="request_clock_in"
+                                    value="{{ $clockIn ? \Carbon\Carbon::parse($clockIn)->format('H:i') : '' }}">
 
                                 <span class="tilde">〜</span>
 
-                                <input type="time" name="request_clock_out" 
-                                value="{{
-                                    $attendanceRequest && $attendanceRequest->request_clock_out 
-                                    ? \Carbon\Carbon::parse($attendanceRequest->request_clock_out)->format('H:i') 
-                                    : ($attendance && $attendance->clock_out 
-                                    ? \Carbon\Carbon::parse($attendance->clock_out)->format('H:i') 
-                                    : '') 
-                                    }}"
-                                    
-                                    
+                                <input type="time" name="request_clock_out"
+                                    value="{{ $clockOut ? \Carbon\Carbon::parse($clockOut)->format('H:i') : '' }}">
                             </div>
                         </td>
                     </tr>
 
-                    @php
-                    $breaks = ($attendanceRequest && $attendanceRequest->breakRequests->count())
-                    ? $attendanceRequest->breakRequests
-                    : $attendance->breaks;
-                    @endphp
+                    @foreach ($displayBreaks as $index => $break)
+                    <tr>
+                        <th>
+                            休憩{{ $index === 0 ? '' : $index + 1 }}
+                        </th>
+                        <td>
+                            <div class="break-row">
+                                <input type="time" name="breaks[{{ $index }}][break_start]"
+                                    value="{{ is_array($break) ? $break['break_start'] :\Carbon\Carbon::parse($break->break_start)->format('H:i') }}">
 
-                    @foreach ($breaks ?? [] as $index => $break)
-                    <th>
-                        休憩{{ $index === 0 ? '' : $index + 1 }}
-                    </th>
-                    <td>
-                        <div class="break-row">
-                            <input type="time" name="breaks[{{ $index }}][break_start]" value="{{ is_array($break) ? $break['break_start'] :\Carbon\Carbon::parse($break->break_start)->format('H:i') }}">
+                                <span class="tilde">〜</span>
 
-                            <span class="tilde">〜</span>
-
-                            <input type="time" name="breaks[{{ $index }}][break_end]"
-                                value="{{ is_array($break) ? $break['break_end'] : \Carbon\Carbon::parse($break->break_end)->format('H:i') }}">
-                        </div>
-                    </td>
+                                <input type="time" name="breaks[{{ $index }}][break_end]"
+                                    value="{{ is_array($break) ? $break['break_end'] : \Carbon\Carbon::parse($break->break_end)->format('H:i') }}">
+                            </div>
+                        </td>
                     </tr>
                     @endforeach
 
                     <tr>
-                        <th>休憩{{ count($breaks ?? []) + 1 }}</th>
+                        <th>休憩{{ count($displayBreaks) + 1 }}</th>
                         <td>
 
                             <div class="break-row">
-                                <input type="time" name="breaks[{{ count($breaks ?? []) }}][break_start]">
+                                <input type="time" name="breaks[{{ count($displayBreaks) }}][break_start]">
 
                                 <span class="tilde">〜</span>
 
-                                <input type="time" name="breaks[{{ count($breaks ?? []) }}][break_end]">
+                                <input type="time" name="breaks[{{ count($displayBreaks) }}][break_end]">
                             </div>
                         </td>
                     </tr>
@@ -128,7 +111,7 @@
 $requestStatus = optional($attendanceRequest)->status;
 @endphp
 
-@if ($requestStatus || $requestStatus == 1)
+@if (!$attendanceRequest || $attendanceRequest->status !== 0)
 <div class="button-area">
     <button type="submit" class="submit-btn">修正</button>
 </div>
@@ -136,7 +119,7 @@ $requestStatus = optional($attendanceRequest)->status;
 
 </form>
 
-@if ($requestStatus == 0)
+@if ($attendanceRequest && $attendanceRequest->status === 0)
 <p style="color:red;">
     ※承認待ちのため修正はできません。
 </p>

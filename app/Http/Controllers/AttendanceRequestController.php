@@ -9,14 +9,16 @@ class AttendanceRequestController extends Controller
 {
   public function index()
     {
-        $pendingRequests = AttendanceRequest::where('user_id', auth()->id())
+    $pendingRequests = AttendanceRequest::with('user','attendance') 
+        ->where('user_id', auth()->id())
         ->where('status', 0)
         ->get();
 
-        $approvedRequests = AttendanceRequest::where('user_id', auth()->id())
+    $approvedRequests = AttendanceRequest::with('user','attendance') 
+        ->where('user_id', auth()  ->id())
         ->where('status', 1)
         ->get();
 
-        return view('requests.index', compact('pendingRequests', 'approvedRequests'));
+    return view('requests.index', compact('pendingRequests', 'approvedRequests'));
     } 
 }
