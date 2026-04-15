@@ -7,6 +7,7 @@ use App\Models\Attendance;
 use App\Models\BreakTime;
 use App\Models\AttendanceRequest;
 use App\Models\BreakRequest;
+use App\Http\Requests\AttendanceCorrectionRequest;
 
 class AttendanceController extends Controller
 {
@@ -105,7 +106,7 @@ class AttendanceController extends Controller
         
         $date = $request->input('date', now()->toDateString());
         
-        $attendances = Attendance::with('user')
+        $attendances = Attendance::with(['user', 'breaks'])
         ->whereDate('work_date', $date)
         ->get();
 
@@ -151,7 +152,7 @@ class AttendanceController extends Controller
     {
     $totalBreak = 0;
 
-    foreach ($attendance->breakTimes ?? []as $break) {
+    foreach ($attendance->breaks ?? [] as $break) {
         if ($break->break_end) {
             $start = strtotime($break->break_start);
             $end = strtotime($break->break_end);
@@ -234,7 +235,7 @@ $clockOut = null;
     }
 
 
-    public function update(Request $request, $date)
+    public function update(AttendanceCorrectionRequest $request, $date)
     {
 
         $attendance = Attendance::where('user_id', auth()->id())

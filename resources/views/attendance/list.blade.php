@@ -39,7 +39,9 @@
 
             @foreach ($dates as $date)
             @php
-            $attendance = $attendances->firstWhere('work_date', $date->format('Y-m-d'));
+            $attendance = $attendances->first(function ($item) use ($date) {
+                return \Carbon\Carbon::parse($item->work_date)->format('Y-m-d') === $date->format('Y-m-d');
+            });
             @endphp
             <tr>
                 <td>

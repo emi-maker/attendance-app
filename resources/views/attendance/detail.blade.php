@@ -52,11 +52,17 @@
 
                                 <input type="time" name="request_clock_in"
                                     value="{{ $clockIn ? \Carbon\Carbon::parse($clockIn)->format('H:i') : '' }}">
+                                @error('request_clock_in')
+                                <p style="color: red;">{{ $message }}</p>
+                                @enderror
 
                                 <span class="tilde">〜</span>
 
                                 <input type="time" name="request_clock_out"
                                     value="{{ $clockOut ? \Carbon\Carbon::parse($clockOut)->format('H:i') : '' }}">
+                                @error('request_clock_out')
+                                <p style="color: red;">>{{ $message }}</p>
+                                @enderror    
                             </div>
                         </td>
                     </tr>
@@ -68,13 +74,19 @@
                         </th>
                         <td>
                             <div class="break-row">
-                                <input type="time" name="breaks[{{ $index }}][break_start]"
-                                    value="{{ is_array($break) ? $break['break_start'] :\Carbon\Carbon::parse($break->break_start)->format('H:i') }}">
-
+                                <input type="time" name="breaks[{{ $index }}][break_start]" value="{{ is_array($break) && !empty($break['break_start']) 
+                                        ? \Carbon\Carbon::parse($break['break_start'])->format('H:i') 
+                                        : (!is_array($break) && $break->break_start 
+                                            ? \Carbon\Carbon::parse($break->break_start)->format('H:i') 
+                                            : '') }}">
+                                
                                 <span class="tilde">〜</span>
-
-                                <input type="time" name="breaks[{{ $index }}][break_end]"
-                                    value="{{ is_array($break) ? $break['break_end'] : \Carbon\Carbon::parse($break->break_end)->format('H:i') }}">
+                                
+                                <input type="time" name="breaks[{{ $index }}][break_end]" value="{{ is_array($break) && !empty($break['break_end']) 
+                                        ? \Carbon\Carbon::parse($break['break_end'])->format('H:i') 
+                                        : (!is_array($break) && $break->break_end 
+                                            ? \Carbon\Carbon::parse($break->break_end)->format('H:i') 
+                                            : '') }}">
                             </div>
                         </td>
                     </tr>
@@ -102,6 +114,9 @@
             <textarea name="note" rows="3" {{ optional($attendance)===1 ? 'disabled' : '' }}>
                 {{ optional($attendance)->note ?? '' }}
             </textarea>
+            @error('note')
+            <p style="color: red;"> {{ $message }}</p>
+            @enderror
         </td>
     </tr>
     </table>

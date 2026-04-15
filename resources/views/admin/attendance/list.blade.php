@@ -42,20 +42,25 @@
             <td>{{ $attendance->user->name }}</td>
             <td>{{ $attendance->work_date }}</td>
             <td>
-                {{ \Carbon\Carbon::parse($attendance->clock_in)->format('H:i') }}
+                {{ $attendance->clock_in
+                ? \Carbon\Carbon::parse($attendance->clock_in)->format('H:i')
+                : ''
+                }}
             </td>
             <td>
-                {{ \Carbon\Carbon::parse($attendance->clock_out)->format('H:i') }}
+                {{ $attendance->clock_out
+                ? \Carbon\Carbon::parse($attendance->clock_out)->format('H:i')
+                : ''
+                }}
             </td>
-            <td>
-                {{ floor($attendance->total_work / 3600) }}:
-                {{ str_pad(floor(($attendance->total_work % 3600) / 60), 2, '0', STR_PAD_LEFT) }}
-            </td>
-            <td>
-                {{ floor($attendance->total_break / 3600) }}:
-                {{ str_pad(floor(($attendance->total_break % 3600) / 60), 2, '0', STR_PAD_LEFT) }}
-            </td>
-
+           <td>
+            {{ floor($attendance->total_break / 3600) }}:
+            {{ str_pad(floor(($attendance->total_break % 3600) / 60), 2, '0', STR_PAD_LEFT) }}
+        </td>
+        <td>
+            {{ floor($attendance->total_work / 3600) }}:
+            {{ str_pad(floor(($attendance->total_work % 3600) / 60), 2, '0', STR_PAD_LEFT) }}
+        </td>
             <td>
                 <a href="/attendance/detail/{{ $attendance->id }}">詳細
                 </a>

@@ -36,17 +36,18 @@ class Attendance extends Model
     //休憩
     public function getTotalBreakAttribute()
     {
-    $breakMinutes = 0;
+    $breakSeconds = 0;
 
     foreach ($this->breaks as $break) {
         if ($break->break_end) {
             $start = \Carbon\Carbon::parse($break->break_start);
             $end = \Carbon\Carbon::parse($break->break_end);
-            $breakMinutes += $end->diffInMinutes($start);
+            $breakSeconds += $end->diffInSeconds($start);
         }
     }
 
-    return $breakMinutes;
+    return $breakSeconds;
+
 }
     //勤務
     public function getTotalWorkAttribute()
@@ -58,7 +59,7 @@ class Attendance extends Model
     $start = \Carbon\Carbon::parse($this->clock_in);
     $end = \Carbon\Carbon::parse($this->clock_out);
 
-    return $end->diffInMinutes($start) - $this->total_break;
+    return $end->diffInSeconds($start) - $this->total_break;
     }
 
     //フォーマット
@@ -68,18 +69,18 @@ class Attendance extends Model
         return '';
     }
 
-    return floor($this->total_break / 60) . ':' .
-        str_pad($this->total_break % 60, 2, '0', STR_PAD_LEFT);
-}
+    return floor($this->total_break / 3600) . ':' .
+        str_pad(floor(($this->total_break % 3600) / 60), 2, '0', STR_PAD_LEFT);
+    }
 
     public function getWorkFormattedAttribute()
     {
-            if (!$this->clock_in || !$this->clock_out) {
+        if (!$this->clock_in || !$this->clock_out) {
         return '';
-    }
+        }
 
-    return floor($this->total_work / 60) . ':' .
-        str_pad($this->total_work % 60, 2, '0', STR_PAD_LEFT);
+    return floor($this->total_work / 3600) . ':' .
+        str_pad(floor(($this->total_work % 3600) / 60), 2, '0', STR_PAD_LEFT);
     }
 
 }
