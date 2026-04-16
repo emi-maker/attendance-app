@@ -57,4 +57,8 @@ Route::put('/attendance/update/{date}', [AttendanceController::class, 'update'])
 
 Route::post('/attendance/store', [AttendanceController::class, 'store']);
 
+//申請一覧
 Route::get('/stamp_correction_request/list', [AttendanceRequestController::class, 'index']);
+
+//管理一覧
+Route::get('/admin/stamp_correction_request/list', [AttendanceRequestController::class, 'adminIndex']);

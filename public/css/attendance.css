@@ -52,8 +52,6 @@ body {
     width: auto;
 }
 
-
-
 .break-btn {
     background: #fff;
     color: #000;
@@ -90,7 +88,7 @@ body {
     display: flex;
     align-items: center;
     width: 80%;
-    margin: 50px auto 0; 
+    margin: 50px auto 0;
     gap: 10px;
 }
 
@@ -125,7 +123,7 @@ input[type="time"] {
 .break-row {
     display: flex;
     gap: 10px;
-    align-items: center;
+    align-items: flex-start;
     margin-bottom: 10px;
 }
 
@@ -154,7 +152,6 @@ textarea {
     display: flex;
     justify-content: flex-end;
 }
-
 
 .detail-container {
     width: 70%;
@@ -201,4 +198,16 @@ textarea {
     border-bottom: 3px solid black;
     color: black;
     font-weight: bold;
+}
+
+.break-input-group {
+    display: flex;
+    flex-direction: column;
+    width: 120px;
+}
+
+.error-message {
+    margin-top: 5px;
+    font-size: 10px;
+    min-height: 20px;
 }

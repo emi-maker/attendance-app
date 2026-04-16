@@ -237,7 +237,6 @@ $clockOut = null;
 
     public function update(AttendanceCorrectionRequest $request, $date)
     {
-
         $attendance = Attendance::where('user_id', auth()->id())
     ->where('work_date', $date)
     ->first();

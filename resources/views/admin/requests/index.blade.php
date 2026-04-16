@@ -31,19 +31,19 @@
                 @foreach ($pendingRequests as $request)
                 <tr>
                     <td>承認待ち</td>
-                
+
                     <td>{{ $request->user->name ?? '' }}</td>
-                
+
                     <td>
                         {{ \Carbon\Carbon::parse($request->attendance->work_date)->format('Y-m-d') }}
                     </td>
-                
+
                     <td>{{ $request->note }}</td>
-                
+
                     <td>
                         {{ \Carbon\Carbon::parse($request->created_at)->format('Y-m-d') }}
                     </td>
-                
+
                     <td>
                         <a href="/attendance/detail/{{ optional($request->attendance)->work_date }}">
                             詳細

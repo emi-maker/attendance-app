@@ -24,6 +24,7 @@
                 @csrf
                 <input type="hidden" name="work_date" value="{{ $date }}">
 
+
                 <table class="detail-table">
                     <tr>
                         <th>名前</th>
@@ -49,20 +50,25 @@
                         <th>出勤・退勤</th>
                         <td>
                             <div class="break-row">
-
-                                <input type="time" name="request_clock_in"
+                                <div class="break-input-group">
+                                    <input type="time" name="request_clock_in"
                                     value="{{ $clockIn ? \Carbon\Carbon::parse($clockIn)->format('H:i') : '' }}">
-                                @error('request_clock_in')
-                                <p style="color: red;">{{ $message }}</p>
-                                @enderror
+
+                                    @error('request_clock_in')
+                                        <p style="color: red;" class="error-message">{{ $message }}</p>
+                                    @enderror
+                                </div>    
 
                                 <span class="tilde">〜</span>
 
-                                <input type="time" name="request_clock_out"
-                                    value="{{ $clockOut ? \Carbon\Carbon::parse($clockOut)->format('H:i') : '' }}">
-                                @error('request_clock_out')
-                                <p style="color: red;">>{{ $message }}</p>
-                                @enderror    
+                                <div class="break-input-group">
+                                    <input type="time" name="request_clock_out"
+                                        value="{{ $clockOut ? \Carbon\Carbon::parse($clockOut)->format('H:i') : '' }}">
+
+                                    @error('request_clock_out')
+                                        <p style="color: red;" class="error-message">{{ $message }}</p>
+                                    @enderror
+                                </div>   
                             </div>
                         </td>
                     </tr>
@@ -74,19 +80,31 @@
                         </th>
                         <td>
                             <div class="break-row">
-                                <input type="time" name="breaks[{{ $index }}][break_start]" value="{{ is_array($break) && !empty($break['break_start']) 
+                                <div class="break-input-group">
+                                    <input type="time" name="breaks[{{ $index }}][break_start]"
+                                    value="{{ is_array($break) && !empty($break['break_start'])
                                         ? \Carbon\Carbon::parse($break['break_start'])->format('H:i') 
                                         : (!is_array($break) && $break->break_start 
                                             ? \Carbon\Carbon::parse($break->break_start)->format('H:i') 
                                             : '') }}">
+                                    @error('breaks.' . $index . '.break_start')
+                                        <p style="color: red;" class="error-message">{{ $message }}</p>
+                                    @enderror
+                                </div>            
                                 
                                 <span class="tilde">〜</span>
                                 
-                                <input type="time" name="breaks[{{ $index }}][break_end]" value="{{ is_array($break) && !empty($break['break_end']) 
+                                <div class="break-input-group">
+                                    <input type="time" name="breaks[{{ $index }}][break_end]"
+                                    value="{{ is_array($break) && !empty($break['break_end'])
                                         ? \Carbon\Carbon::parse($break['break_end'])->format('H:i') 
                                         : (!is_array($break) && $break->break_end 
                                             ? \Carbon\Carbon::parse($break->break_end)->format('H:i') 
                                             : '') }}">
+                                    @error('breaks.' . $index . '.break_end')
+                                        <p style="color: red;" class="error-message">{{ $message }}</p>
+                                    @enderror
+                                </div>            
                             </div>
                         </td>
                     </tr>
@@ -97,11 +115,17 @@
                         <td>
 
                             <div class="break-row">
-                                <input type="time" name="breaks[{{ count($displayBreaks) }}][break_start]">
+                                    <input type="time" name="breaks[{{ count($displayBreaks) }}][break_start]">
+                                        <p style="color: red;">
+                                       {{ $errors->first('breaks.' . count($displayBreaks) . '.break_start') }}
+                                        </p>
 
                                 <span class="tilde">〜</span>
 
                                 <input type="time" name="breaks[{{ count($displayBreaks) }}][break_end]">
+                                <p style="color: red;">
+                                    {{ $errors->first('breaks.' . count($displayBreaks) . '.break_end') }}
+                                </p>
                             </div>
                         </td>
                     </tr>
