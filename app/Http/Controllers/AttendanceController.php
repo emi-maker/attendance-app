@@ -177,38 +177,36 @@ class AttendanceController extends Controller
     //詳細（データ取ってくる）
     public function show($date)
     {   
-
-        $attendance = Attendance::with('breaks')
-            ->firstOrCreate([
+       $attendance = Attendance::with('breaks')
+          ->firstOrCreate([
             'user_id' => auth()->id(),
             'work_date' => $date,
-            ]);
+        ]);  
 
-        $attendanceRequest = AttendanceRequest::with('breakRequests')
-            ->where('attendance_id', $attendance->id)
-            ->latest()
-            ->first();
+    $attendanceRequest = AttendanceRequest::with('breakRequests')
+        ->where('attendance_id', $attendance->id)
+        ->latest()
+        ->first();
 
+    $displayBreaks = [];
 
-        $displayBreaks = [];
-
-        if ($attendanceRequest && $attendanceRequest->breakRequests && $attendanceRequest->breakRequests->count()){
-            foreach ($attendanceRequest->breakRequests as $break) {
+    if ($attendanceRequest && $attendanceRequest->breakRequests && $attendanceRequest->breakRequests->count()) {
+        foreach ($attendanceRequest->breakRequests as $break) {
             $displayBreaks[] = [
                 'break_start' => $break->break_start,
                 'break_end' => $break->break_end,
-        ];
+            ];
+        }
+    } else {
+        foreach ($attendance->breaks as $break) {
+            $displayBreaks[] = [
+                'break_start' => $break->break_start,
+                'break_end' => $break->break_end,
+            ];
+        }
     }
-} else {
-    foreach ($attendance->breaks as $break) {
-        $displayBreaks[] = [
-            'break_start' => $break->break_start,
-            'break_end' => $break->break_end,
-        ];
-    }
-}
 
-$clockOut = null;
+    $clockOut = null;
 
     if ($attendanceRequest && $attendanceRequest->request_clock_out) {
         $clockOut = $attendanceRequest->request_clock_out;
@@ -220,25 +218,27 @@ $clockOut = null;
 
     if ($attendanceRequest && $attendanceRequest->request_clock_in) {
         $clockIn = $attendanceRequest->request_clock_in;
-    } elseif ($attendance &&$attendance->clock_in) {
+    } elseif ($attendance && $attendance->clock_in) {
         $clockIn = $attendance->clock_in;
     }
 
+    $date = $attendance->work_date;
+
     return view('attendance.detail', compact(
-                'attendance',
-                'attendanceRequest',
-                'clockIn', 
-                'clockOut',
-                'displayBreaks',
-                'date'
-        ));    
-    }
+        'attendance',
+        'attendanceRequest',
+        'clockIn',
+        'clockOut',
+        'displayBreaks',
+        'date'
+    ));
+}  
 
 
-    public function update(AttendanceCorrectionRequest $request, $date)
+    public function update(AttendanceCorrectionRequest $request, $id)
     {
         $attendance = Attendance::where('user_id', auth()->id())
-    ->where('work_date', $date)
+    ->where('id', $id)
     ->first();
 
         if (!$attendance) {
@@ -286,7 +286,7 @@ $clockOut = null;
         }
 }
 
-        return redirect('/attendance/detail/' . $date)
+        return redirect('/attendance/detail/' . $id)
     ->with('message', '※修正申請を送信しました');
 }
 
@@ -301,7 +301,7 @@ $clockOut = null;
             'clock_out' => null,
         ]);
 
-        return redirect('/attendance/detail/'. $request->work_date);
+        return redirect('/attendance/detail/'. $request->id);
     }
 
     private function getTodayAttendance()
