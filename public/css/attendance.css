@@ -203,11 +203,9 @@ textarea {
 .break-input-group {
     display: flex;
     flex-direction: column;
-    width: 120px;
 }
 
 .error-message {
     margin-top: 5px;
     font-size: 10px;
-    min-height: 20px;
 }

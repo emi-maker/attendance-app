@@ -63,7 +63,7 @@
 
                                 <div class="break-input-group">
                                     <input type="time" name="request_clock_out"
-                                        value="{{ old('request_clock_out', $clockOut ? \Carbon\Carbon::parse($clockOut)->format('H:i') : '') }}"> 
+                                        value="{{ old('request_clock_out', $clockOut ? \Carbon\Carbon::parse($clockOut)->format('H:i') : '') }}">
 
                                     @error('request_clock_out')
                                     <p style="color: red;" class="error-message">{{ $message }}</p>
@@ -148,21 +148,16 @@
 </div>
 
 @php
-$requestStatus = optional($attendanceRequest)->status;
+    $requestStatus = optional($attendanceRequest)->status;
 @endphp
 
-@if (!$attendanceRequest || $attendanceRequest->status !== 0)
 <div class="button-area">
-    <button type="submit" class="submit-btn">修正</button>
+    @if ($mode === 'approve')
+        <button type="submit" class="submit-btn">承認</button>
+    @else
+        <button type="submit" class="submit-btn">修正</button>
+    @endif
 </div>
-@endif
 
 </form>
-
-@if ($attendanceRequest && $attendanceRequest->status === 0)
-<p style="color:red;">
-    ※承認待ちのため修正はできません。
-</p>
-@endif
-
 @endsection

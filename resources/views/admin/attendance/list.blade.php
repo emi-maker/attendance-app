@@ -62,7 +62,7 @@
             {{ str_pad(floor(($attendance->total_work % 3600) / 60), 2, '0', STR_PAD_LEFT) }}
         </td>
             <td>
-                <a href="/attendance/detail/{{ $attendance->id }}">詳細
+                <a href="/admin/attendance/{{ $attendance->id }}">詳細
                 </a>
             </td>
         </tr>

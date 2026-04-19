@@ -5,6 +5,7 @@ use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AttendanceRequestController;
+use App\Http\Controllers\AdminAttendanceController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -62,3 +63,6 @@ Route::get('/stamp_correction_request/list', [AttendanceRequestController::class
 
 //管理一覧
 Route::get('/admin/stamp_correction_request/list', [AttendanceRequestController::class, 'adminIndex']);
+
+Route::get('/admin/attendance/{id}', [AdminAttendanceController::class, 'show'])
+    ->name('admin.attendance.show');
