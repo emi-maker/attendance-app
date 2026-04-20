@@ -53,16 +53,21 @@ class AttendanceCorrectionRequest extends FormRequest
 
     public function withValidator($validator)
     {
-    $validator->after(function ($validator) {
+        $validator->after(function ($validator) {
 
-        foreach ($this->breaks ?? [] as $index => $break)   {
-            if (!empty($break['break_start'])) {
-                $validator->errors()->add(
-                    "breaks.$index.break_start",
-                    '休憩時間が不適切な値です'
+            foreach ($this->breaks ?? [] as $index => $break)   {
+                if (!empty($break['break_start'])) {
+                    if (
+                      $break['break_start'] < $this->request_clock_in ||
+                       $break['break_start'] > $this->request_clock_out
+                     ) {
+                        $validator->errors()->add(
+                        "breaks.$index.break_start",
+                        '休憩時間が不適切な値です'
                     );
                 }
             }
-        });
-    }
+        }
+    });
+}
 }

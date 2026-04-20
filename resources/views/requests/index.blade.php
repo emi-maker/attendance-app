@@ -45,8 +45,8 @@
                     </td>
                 
                     <td>
-                        <a href="/attendance/detail/{{ optional($request->attendance)->id}}">
-                            詳細
+                        <a href="/attendance/detail/{{ optional($request->attendance)->work_date }}">
+                        詳細
                         </a>
                     </td>
                 </tr>

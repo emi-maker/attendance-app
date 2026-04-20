@@ -59,10 +59,10 @@ Route::put('/attendance/update/{id}', [AttendanceController::class, 'update']);
 Route::post('/attendance/store', [AttendanceController::class, 'store']);
 
 //申請一覧
-Route::get('/stamp_correction_request/list', [AttendanceRequestController::class, 'index']);
+Route::middleware('check.role')->group(function () {
+    Route::get('/stamp_correction_request/list', [AttendanceRequestController::class, 'index']);
+});
 
-//管理一覧
-Route::get('/admin/stamp_correction_request/list', [AttendanceRequestController::class, 'adminIndex']);
+Route::get('/admin/attendance/{id}', [AdminAttendanceController::class, 'show']);
 
-Route::get('/admin/attendance/{id}', [AdminAttendanceController::class, 'show'])
-    ->name('admin.attendance.show');
+Route::put('/admin/attendance/approve/{id}', [AdminAttendanceController::class, 'approve']);    

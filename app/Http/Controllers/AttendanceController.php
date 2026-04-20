@@ -13,9 +13,6 @@ class AttendanceController extends Controller
 {
     public function index()
     {
-        if (auth()->user()->is_admin) {
-        return redirect('/admin/attendance/list');
-    }
         $todayAttendance = $this->getTodayAttendance();
 
         return view('attendance.index', compact('todayAttendance'));
@@ -224,6 +221,7 @@ class AttendanceController extends Controller
 
     $date = $attendance->work_date;
 
+
     return view('attendance.detail', compact(
         'attendance',
         'attendanceRequest',
@@ -272,6 +270,7 @@ class AttendanceController extends Controller
 
         BreakRequest::where('attendance_request_id', $attendanceRequest->id)->delete();
 
+
         foreach ($request->breaks as $break) {
 
         if (!empty($break['break_start']) && !empty($break['break_end'])) {
@@ -286,7 +285,7 @@ class AttendanceController extends Controller
         }
 }
 
-        return redirect('/attendance/detail/' . $id)
+        return redirect('/attendance/detail/' . $attendance->work_date)
     ->with('message', '※修正申請を送信しました');
 }
 

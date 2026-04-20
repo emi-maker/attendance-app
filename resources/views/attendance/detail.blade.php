@@ -15,7 +15,7 @@
     <div class="detail-card attendance-box">
 
         @if ($attendance)
-        <form id="attendance-form" action="/attendance/update/{{ $date }}" method="POST">
+        <form id="attendance-form" action="/attendance/update/{{ $attendance->id }}" method="POST">
             @method('PUT')
             @else
             <form id="attendance-form" action="/attendance/store" method="POST">
@@ -63,7 +63,7 @@
 
                                 <div class="break-input-group">
                                     <input type="time" name="request_clock_out"
-                                        value="{{ old('request_clock_out', $clockOut ? \Carbon\Carbon::parse($clockOut)->format('H:i') : '') }}"> 
+                                        value="{{ old('request_clock_out', $clockOut ? \Carbon\Carbon::parse($clockOut)->format('H:i') : '') }}">
 
                                     @error('request_clock_out')
                                     <p style="color: red;" class="error-message">{{ $message }}</p>
@@ -81,11 +81,13 @@
                         <td>
                             <div class="break-row">
                                 <div class="break-input-group">
-                                    <input type="time" name="breaks[{{ $index }}][break_start]" value="{{ is_array($break) && !empty($break['break_start'])
+                                    <input type="time" name="breaks[{{ $index }}][break_start]" value="{{ old('breaks.' . $index . '.break_start',
+                                    is_array($break) && !empty($break['break_start'])
                                         ? \Carbon\Carbon::parse($break['break_start'])->format('H:i') 
                                         : (!is_array($break) && $break->break_start 
                                             ? \Carbon\Carbon::parse($break->break_start)->format('H:i') 
-                                            : '') }}">
+                                            : '') 
+                                            ) }}">
                                     @error('breaks.' . $index . '.break_start')
                                     <p style="color: red;" class="error-message">{{ $message }}</p>
                                     @enderror
@@ -95,11 +97,12 @@
                                 <span class="tilde">〜</span>
 
                                 <div class="break-input-group">
-                                    <input type="time" name="breaks[{{ $index }}][break_end]" value="{{ is_array($break) && !empty($break['break_end'])
+                                    <input type="time" name="breaks[{{ $index }}][break_end]" value="{{ old('breaks.' . $index . '.break_end',is_array($break) && !empty($break['break_end'])
                                     ? \Carbon\Carbon::parse($break['break_end'])->format('H:i') 
                                     : (!is_array($break) && $break->break_end 
                                     ? \Carbon\Carbon::parse($break->break_end)->format('H:i') 
-                                            : '') }}">
+                                    : '') 
+                                    ) }}">
                                     @error('breaks.' . $index . '.break_end')
                                     <p style="color: red;" class="error-message">{{ $message }}</p>
                                     @enderror
@@ -115,7 +118,8 @@
 
                             <div class="break-row">
                                 <div class="break-input-group">
-                                    <input type="time" name="breaks[{{ count($displayBreaks) }}][break_start]">
+                                    <input type="time" name="breaks[{{ count($displayBreaks) }}][break_start]"
+                                        value="{{ old('breaks.' . count($displayBreaks) . '.break_start') }}">
                                     <p style="color: red;">
                                         {{ $errors->first('breaks.' . count($displayBreaks) . '.break_start') }}
                                     </p>
@@ -123,7 +127,8 @@
 
                                 <span class="tilde">〜</span>
 
-                                <input type="time" name="breaks[{{ count($displayBreaks) }}][break_end]">
+                                <input type="time" name="breaks[{{ count($displayBreaks) }}][break_end]"
+                                    value="{{ old('breaks.' . count($displayBreaks) . '.break_end') }}">
                                 <p style="color: red;">
                                     {{ $errors->first('breaks.' . count($displayBreaks) . '.break_end') }}
                                 </p>
@@ -136,8 +141,7 @@
     <tr>
         <th>備考</th>
         <td>
-            <textarea name="note" rows="3" {{ optional($attendance)===1 ? 'disabled' : '' }}>
-                {{ optional($attendance)->note ?? '' }}
+            <textarea name="note" rows="3">{{ old('note', optional($attendance)->note) }}
             </textarea>
             @error('note')
             <p style="color: red;"> {{ $message }}</p>

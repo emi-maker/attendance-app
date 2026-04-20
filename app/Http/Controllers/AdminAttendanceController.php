@@ -8,6 +8,13 @@ use Illuminate\Http\Request;
 
 class AdminAttendanceController extends Controller
 {
+    public function index()
+    {
+    $attendances = Attendance::with('user')->get();
+
+    return view('admin.attendance.list', compact('attendances'));
+    }
+
     public function show($id)
     {
         $attendance = Attendance::with('breaks', 'user')
@@ -47,7 +54,7 @@ class AdminAttendanceController extends Controller
         $date = $attendance->work_date;
 
         $mode = 'edit';
-
+        
         return view('admin.attendance.detail', compact(
             'attendance',
             'attendanceRequest',
@@ -57,5 +64,16 @@ class AdminAttendanceController extends Controller
             'date',
             'mode'
         ));
+    }
+
+    public function approve($id)
+    {   
+    $attendanceRequest = AttendanceRequest::findOrFail($id);
+
+    $attendanceRequest->update([
+        'status' => 1,
+    ]);
+
+    return redirect('/admin/attendance/' . $attendanceRequest->attendance_id);
     }
 }

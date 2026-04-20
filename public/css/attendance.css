@@ -209,3 +209,10 @@ textarea {
     margin-top: 5px;
     font-size: 10px;
 }
+
+.submit-btn.approved-btn {
+    background-color: #999;
+    color: #fff;
+    cursor: not-allowed;
+    border: none;
+}

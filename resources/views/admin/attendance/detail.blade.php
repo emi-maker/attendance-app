@@ -14,12 +14,12 @@
 
     <div class="detail-card attendance-box">
 
-        @if ($attendance)
-        <form id="attendance-form" action="/attendance/update/{{ $date }}" method="POST">
-            @method('PUT')
+        @if ($attendanceRequest)
+            <form id="attendance-form" action="/admin/attendance/approve/{{ $attendanceRequest->id }}" method="POST">
+                @method('PUT')
             @else
-            <form id="attendance-form" action="/attendance/store" method="POST">
-                @endif
+                <form id="attendance-form" action="#" method="POST">
+            @endif
 
                 @csrf
                 <input type="hidden" name="work_date" value="{{ $date }}">
@@ -136,8 +136,7 @@
     <tr>
         <th>備考</th>
         <td>
-            <textarea name="note" rows="3" {{ optional($attendance)===1 ? 'disabled' : '' }}>
-                {{ optional($attendance)->note ?? '' }}
+            <textarea name="note" rows="3">{{ old('note', optional($attendanceRequest)->note ?? optional($attendance)->note) }}
             </textarea>
             @error('note')
             <p style="color: red;"> {{ $message }}</p>
@@ -152,10 +151,12 @@
 @endphp
 
 <div class="button-area">
-    @if ($mode === 'approve')
+    @if ($attendanceRequest && $attendanceRequest->status === 0)
         <button type="submit" class="submit-btn">承認</button>
     @else
-        <button type="submit" class="submit-btn">修正</button>
+        <button type="button" class="submit-btn approved-btn" disabled>
+        承認済み
+        </button>
     @endif
 </div>
 
