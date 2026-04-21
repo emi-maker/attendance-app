@@ -171,14 +171,23 @@ class AttendanceController extends Controller
 
 }
 
-    //詳細（データ取ってくる）
-    public function show($date)
-    {   
-       $attendance = Attendance::with('breaks')
-          ->firstOrCreate([
+    public function detailByDate($date)
+    {
+    $attendance = Attendance::firstOrCreate(
+        [
             'user_id' => auth()->id(),
             'work_date' => $date,
-        ]);  
+        ]
+    );
+
+    return redirect('/attendance/detail/' . $attendance->id);
+}
+
+    //詳細（データ取ってくる）
+    public function show($id)
+    {   
+       $attendance = Attendance::with('breaks')
+          ->findOrFail($id);
 
     $attendanceRequest = AttendanceRequest::with('breakRequests')
         ->where('attendance_id', $attendance->id)

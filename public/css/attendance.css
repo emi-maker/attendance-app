@@ -216,3 +216,19 @@ textarea {
     cursor: not-allowed;
     border: none;
 }
+
+.csv-button-area {
+    width: 100%;
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.csv-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #000;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+}

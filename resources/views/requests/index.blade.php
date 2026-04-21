@@ -1,9 +1,11 @@
-@extends('layouts.admin')
+@extends('layouts.app')
 
 @section('content')
 
 <link rel="stylesheet" href="{{ asset('css/common.css') }}">
 <link rel="stylesheet" href="{{ asset('css/attendance.css') }}">
+
+@yield('css')
 
 <div class="detail-container">
     <div class="title-area">
@@ -45,7 +47,7 @@
                     </td>
                 
                     <td>
-                        <a href="/attendance/detail/{{ optional($request->attendance)->work_date }}">
+                        <a href="/attendance/detail/{{ optional($request->attendance)->id }}">
                         詳細
                         </a>
                     </td>

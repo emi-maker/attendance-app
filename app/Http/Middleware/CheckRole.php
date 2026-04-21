@@ -20,6 +20,8 @@ class CheckRole
             session(['role' => 'admin']);
         } elseif (auth()->check()) {
         session(['role' => 'user']);
+    } else {
+        session()->forget('role');
     }
         return $next($request);
     }

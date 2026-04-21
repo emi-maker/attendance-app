@@ -1,11 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AdminAuthController;
+use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AttendanceRequestController;
-use App\Http\Controllers\AdminAttendanceController;
+use App\Http\Controllers\Admin\AdminAttendanceController;
+use App\Http\Controllers\Admin\AdminStaffController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -51,7 +52,10 @@ Route::post('/attendance/end', [AttendanceController::class, 'end']);
 Route::get('/attendance/list', [AttendanceController::class, 'userlist']);
 
 //勤怠詳細
-Route::get('/attendance/detail/{id}', [AttendanceController::class, 'show']);
+Route::middleware('auth')->group(function () {
+    Route::get('/attendance/detail/date/{date}', [AttendanceController::class, 'detailByDate']);
+    Route::get('/attendance/detail/{id}', [AttendanceController::class, 'show']);
+});    
 
 //勤怠修正
 Route::put('/attendance/update/{id}', [AttendanceController::class, 'update']);
@@ -63,6 +67,13 @@ Route::middleware('check.role')->group(function () {
     Route::get('/stamp_correction_request/list', [AttendanceRequestController::class, 'index']);
 });
 
+Route::get('/admin/attendance/detail/{userId}/{date}',
+[AdminAttendanceController::class, 'detail']);
+
 Route::get('/admin/attendance/{id}', [AdminAttendanceController::class, 'show']);
 
-Route::put('/admin/attendance/approve/{id}', [AdminAttendanceController::class, 'approve']);    
+Route::put('/admin/attendance/approve/{id}', [AdminAttendanceController::class, 'approve']);
+
+Route::get('/admin/staff/list', [AdminStaffController::class, 'list']);
+
+Route::get('/admin/attendance/staff/{id}', [AdminAttendanceController::class, 'staffAttendance']);

@@ -1,16 +1,17 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('css')
 <link rel="stylesheet" href="{{ asset('css/common.css') }}">
 <link rel="stylesheet" href="{{ asset('css/attendance.css') }}">
+
 @endsection
 
 @section('content')
-
+ 
 <div class="detail-container">
     <div class="title-area">
         <div class="line"></div>
-        <h1 class="detail-title">勤怠一覧</h1>
+            <h1>{{ $user->name }}さんの勤怠</h1>
     </div>
 
 
@@ -40,7 +41,7 @@
             @foreach ($dates as $date)
             @php
             $attendance = $attendances->first(function ($item) use ($date) {
-                return \Carbon\Carbon::parse($item->work_date)->format('Y-m-d') === $date->format('Y-m-d');
+            return \Carbon\Carbon::parse($item->work_date)->format('Y-m-d') === $date->format('Y-m-d');
             });
             @endphp
             <tr>
@@ -65,13 +66,16 @@
                     {{ $attendance ? $attendance->work_formatted : '' }}
                 </td>
                 <td>
-                    <a href="{{ url('/attendance/detail/date/' . $date->format('Y-m-d')) }}">
-                    詳細</a>
+                    <a href="{{ url('/admin/attendance/' . $user->id . '/' . $date->format('Y-m-d')) }}">詳細</a>
                 </td>
             </tr>
             @endforeach
 
-    </table>
+        </table>
     </div>
+</div>
+<div class="attendance-box csv-button-wrapper">
+    <div class="csv-button-area">
+        <a href="" class="csv-button">CSV出力</a>
 </div>
 @endsection
