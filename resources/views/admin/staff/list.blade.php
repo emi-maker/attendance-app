@@ -12,13 +12,13 @@
         <div class="line"></div>
         <h1 class="detail-title">スタッフ一覧</h1>
     </div>
-
+    
     <div class="detail-card attendance-box">
         <table class="detail-table">
         <tr>
             <th>名前</th>
             <th>メールアドレス</th>
-            <th>詳細</th>
+            <th>月次勤怠</th>
         </tr>
 
         @foreach ($users as $user)

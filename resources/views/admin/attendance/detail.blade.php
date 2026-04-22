@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('css')
 <link rel="stylesheet" href="{{ asset('css/attendance.css') }}">
@@ -151,13 +151,7 @@
 @endphp
 
 <div class="button-area">
-    @if ($attendanceRequest && $attendanceRequest->status === 0)
-        <button type="submit" class="submit-btn">承認</button>
-    @else
-        <button type="button" class="submit-btn approved-btn" disabled>
-        承認済み
-        </button>
-    @endif
+   <button type="submit" class="submit-btn">修正</button>
 </div>
 
 </form>

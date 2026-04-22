@@ -245,8 +245,8 @@ class AttendanceController extends Controller
     public function update(AttendanceCorrectionRequest $request, $id)
     {
         $attendance = Attendance::where('user_id', auth()->id())
-    ->where('id', $id)
-    ->first();
+        ->where('id', $id)
+        ->first();
 
         if (!$attendance) {
         return redirect('/attendance');
@@ -294,7 +294,7 @@ class AttendanceController extends Controller
         }
 }
 
-        return redirect('/attendance/detail/' . $attendance->work_date)
+        return redirect('/attendance/detail/date/' . $attendance->work_date)
     ->with('message', '※修正申請を送信しました');
 }
 

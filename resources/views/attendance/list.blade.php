@@ -40,7 +40,7 @@
             @foreach ($dates as $date)
             @php
             $attendance = $attendances->first(function ($item) use ($date) {
-                return \Carbon\Carbon::parse($item->work_date)->format('Y-m-d') === $date->format('Y-m-d');
+            return \Carbon\Carbon::parse($item->work_date)->format('Y-m-d') === $date->format('Y-m-d');
             });
             @endphp
             <tr>
@@ -65,13 +65,19 @@
                     {{ $attendance ? $attendance->work_formatted : '' }}
                 </td>
                 <td>
-                    <a href="{{ url('/attendance/detail/date/' . $date->format('Y-m-d')) }}">
-                    詳細</a>
+                    
+                    @if ($attendance)
+                        <a href="{{ url('/attendance/detail/' . $attendance->id) }}">
+                        詳細</a>
+                    @else
+                        <a href="{{ url('/attendance/detail/date/' . $date->format('Y-m-d')) }}">
+                        詳細</a>    
+                    @endif
                 </td>
             </tr>
             @endforeach
 
-    </table>
+        </table>
     </div>
 </div>
 @endsection

@@ -55,9 +55,7 @@
         </div>
 
         <div id="approved" style="display:none;">
-            <table>
-                <div id="pending">
-                    <table class="request-table">
+            <table class="request-table">
                     <tr>
                         <th>状態</th>
                         <th>名前</th>
@@ -84,7 +82,7 @@
                         </td>
                 
                         <td>
-                         <a href="/admin/attendance/{{ optional($request->attendance)->id }}">
+                         <a href="/admin/attendance/approve/{{ optional($request->attendance)->id }}">
                             詳細
                          </a>
                         </td>

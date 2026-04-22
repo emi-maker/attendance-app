@@ -23,7 +23,7 @@ class AttendanceRequestController extends Controller
         ->where('user_id', auth()->id())
         ->where('status', 1)
         ->get();
-
+    
     return view('requests.index', compact('pendingRequests', 'approvedRequests'));
 }
 

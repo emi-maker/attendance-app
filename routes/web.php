@@ -72,8 +72,11 @@ Route::get('/admin/attendance/detail/{userId}/{date}',
 
 Route::get('/admin/attendance/{id}', [AdminAttendanceController::class, 'show']);
 
-Route::put('/admin/attendance/approve/{id}', [AdminAttendanceController::class, 'approve']);
+Route::get('/admin/attendance/approve/{id}', [AttendanceRequestController::class, 'showApprove']);
+
+Route::put('/admin/attendance/approve/{id}', [AttendanceRequestController::class, 'approve']);
 
 Route::get('/admin/staff/list', [AdminStaffController::class, 'list']);
 
 Route::get('/admin/attendance/staff/{id}', [AdminAttendanceController::class, 'staffAttendance']);
+

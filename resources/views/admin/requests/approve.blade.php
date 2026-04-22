@@ -1,11 +1,9 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('content')
 
 <link rel="stylesheet" href="{{ asset('css/common.css') }}">
 <link rel="stylesheet" href="{{ asset('css/attendance.css') }}">
-
-@yield('css')
 
 <div class="detail-container">
     <div class="title-area">
@@ -32,16 +30,22 @@
 
                 @foreach ($pendingRequests as $request)
                 <tr>
-                    <td>{{ $request->status == 0 ? '承認待ち' : '承認済み' }}</td>
+                    <td>承認待ち</td>
+
                     <td>{{ $request->user->name ?? '' }}</td>
-                    <td>{{ \Carbon\Carbon::parse($request->attendance->work_date)->format('Y-m-d') }}
+
+                    <td>
+                        {{ \Carbon\Carbon::parse($request->attendance->work_date)->format('Y-m-d') }}
                     </td>
+
                     <td>{{ $request->note }}</td>
-                    <td>{{ \Carbon\Carbon::parse($request->created_at)->format('Y-m-d') }}
+
+                    <td>
+                        {{ \Carbon\Carbon::parse($request->created_at)->format('Y-m-d') }}
                     </td>
 
                     <td>
-                        <a href="/attendance/detail/{{ optional($request->attendance)->id }}">
+                        <a href="/admin/attendance/{{ optional($request->attendance)->id }}">
                             詳細
                         </a>
                     </td>
@@ -63,13 +67,22 @@
 
                 @foreach ($approvedRequests as $request)
                 <tr>
-                    <td>{{ $request->status == 0 ? '承認待ち' : '承認済み' }}</td>
+                    <td>承認済み</td>
+
                     <td>{{ $request->user->name ?? '' }}</td>
-                    <td>{{ \Carbon\Carbon::parse($request->attendance->work_date)->format('Y-m-d') }}</td>
-                    <td>{{ $request->note }}</td>
-                    <td>{{ \Carbon\Carbon::parse($request->created_at)->format('Y-m-d') }}</td>
+
                     <td>
-                        <a href="/admin/attendance/{{ optional($request->attendance)->id }}">
+                        {{ \Carbon\Carbon::parse($request->attendance->work_date)->format('Y-m-d') }}
+                    </td>
+
+                    <td>{{ $request->note }}</td>
+
+                    <td>
+                        {{ \Carbon\Carbon::parse($request->created_at)->format('Y-m-d') }}
+                    </td>
+
+                    <td>
+                        <a href="/admin/attendance/approve/{{ $request->id }}">
                             詳細
                         </a>
                     </td>
@@ -77,22 +90,20 @@
                 @endforeach
             </table>
         </div>
-    </div>
-</div>
 
 
-<script>
-    function showTab(tab, el) {    
-          // 表示切り替え
-            document.getElementById('pending').style.display = 'none';
-            document.getElementById('approved').style.display = 'none';
-            document.getElementById(tab).style.display = 'block';
+        <script>
+            function showTab(tab, el) {    
+                 // 表示切り替え
+                document.getElementById('pending').style.display = 'none';
+                document.getElementById('approved').style.display = 'none';
+                document.getElementById(tab).style.display = 'block';
         
-            // active切り替え
-            const tabs = document.querySelectorAll('.tab');
-            tabs.forEach(t => t.classList.remove('active'));
+                // active切り替え
+                const tabs = document.querySelectorAll('.tab');
+                tabs.forEach(t => t.classList.remove('active'));
         
-            el.classList.add('active');
-            } 
-</script>
-@endsection
+                el.classList.add('active');
+                } 
+        </script>
+        @endsection

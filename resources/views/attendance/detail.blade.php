@@ -28,7 +28,9 @@
                 <table class="detail-table">
                     <tr>
                         <th>名前</th>
-                        <td>{{ $attendance ? $attendance->user->name : auth()->user()->name }}</td>
+                            <td>
+                            {{ $attendance ? $attendance->user->name : auth()->user()->name }}
+                            </td>
                     </tr>
                     <tr>
                         <th>日付</th>
