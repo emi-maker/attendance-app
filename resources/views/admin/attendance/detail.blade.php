@@ -15,11 +15,11 @@
     <div class="detail-card attendance-box">
 
         @if ($attendanceRequest)
-            <form id="attendance-form" action="/admin/attendance/approve/{{ $attendanceRequest->id }}" method="POST">
-                @method('PUT')
+        <form id="attendance-form" action="/stamp_correction_request/approve/{{ $attendanceRequest->id }}" method="POST">{{ $attendanceRequest->id }}" method="POST">
+            @method('PUT')
             @else
-                <form id="attendance-form" action="#" method="POST">
-            @endif
+            <form id="attendance-form" action="#" method="POST">
+                @endif
 
                 @csrf
                 <input type="hidden" name="work_date" value="{{ $date }}">
@@ -147,11 +147,11 @@
 </div>
 
 @php
-    $requestStatus = optional($attendanceRequest)->status;
+$requestStatus = optional($attendanceRequest)->status;
 @endphp
 
 <div class="button-area">
-   <button type="submit" class="submit-btn">修正</button>
+    <button type="submit" class="submit-btn">修正</button>
 </div>
 
 </form>

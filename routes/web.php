@@ -72,11 +72,12 @@ Route::get('/admin/attendance/detail/{userId}/{date}',
 
 Route::get('/admin/attendance/{id}', [AdminAttendanceController::class, 'show']);
 
-Route::get('/admin/attendance/approve/{id}', [AttendanceRequestController::class, 'showApprove']);
-
-Route::put('/admin/attendance/approve/{id}', [AttendanceRequestController::class, 'approve']);
 
 Route::get('/admin/staff/list', [AdminStaffController::class, 'list']);
 
 Route::get('/admin/attendance/staff/{id}', [AdminAttendanceController::class, 'staffAttendance']);
+
+Route::get('/stamp_correction_request/approve/{id}', [AttendanceRequestController::class, 'approve']);
+
+Route::put('/stamp_correction_request/approve/{id}', [AttendanceRequestController::class, 'updateApprove']);
 

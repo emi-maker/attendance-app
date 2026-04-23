@@ -82,9 +82,9 @@
                         </td>
                 
                         <td>
-                         <a href="/admin/attendance/approve/{{ optional($request->attendance)->id }}">
-                            詳細
-                         </a>
+                        <a href="/stamp_correction_request/approve/{{ $request->id }}">
+                        詳細
+                        </a>
                         </td>
                     </tr>
                     @endforeach
