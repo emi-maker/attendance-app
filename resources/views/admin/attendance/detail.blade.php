@@ -15,10 +15,10 @@
     <div class="detail-card attendance-box">
 
         @if ($attendanceRequest)
-        <form id="attendance-form" action="/stamp_correction_request/approve/{{ $attendanceRequest->id }}" method="POST">{{ $attendanceRequest->id }}" method="POST">
+        <form action="/stamp_correction_request/approve/{{ $attendanceRequest->id }}" method="POST">
             @method('PUT')
-            @else
-            <form id="attendance-form" action="#" method="POST">
+        @else
+            <form action="#" method="POST">
                 @endif
 
                 @csrf

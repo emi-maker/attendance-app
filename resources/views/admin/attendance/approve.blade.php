@@ -11,30 +11,29 @@
         <div class="line"></div>
         <h1 class="detail-title">勤怠詳細</h1>
     </div>
-
+        attendance_id: {{ $attendanceRequest->attendance->id }}
     <div class="detail-card attendance-box">
 
-        <form action="/stamp_correction_request/approve/{{ $request->id }}" method="POST">
+        <form action="/stamp_correction_request/approve/{{ $attendanceRequest->id }}" method="POST">
             @csrf
             @method('PUT')
 
-            <input type="hidden" name="work_date" value="{{ $request->attendance->work_date }}">
-
+            <input type="hidden" name="work_date" value="{{ $attendanceRequest->attendance->work_date }}">
 
             <table class="detail-table">
                 <tr>
                     <th>名前</th>
-                    <td>{{ $request->user->name }}</td>
+                    <td>{{ $attendanceRequest->user->name }}</td>
                 </tr>
                 <tr>
                     <th>日付</th>
                     <td>
                         <div class="date-box">
                             <span class="year">
-                                {{ \Carbon\Carbon::parse ($request->attendance->work_date)->format('Y年') }}
+                                {{ \Carbon\Carbon::parse ($attendanceRequest->attendance->work_date)->format('Y年') }}
                             </span>
                             <span class="date">
-                                {{ \Carbon\Carbon::parse($request->attendance->work_date)->format('n月j日') }}
+                                {{ \Carbon\Carbon::parse($attendanceRequest->attendance->work_date)->format('n月j日') }}
                             </span>
                         </div>
 
@@ -45,8 +44,7 @@
                        <div class="break-row">
                         <div class="break-input-group">
                             <input type="time" name="request_clock_in"
-                                value="{{ $request->request_clock_in ? \Carbon\Carbon::parse($request->request_clock_in)->format('H:i') : '' }}">
-                    
+                                value="{{ $attendanceRequest->attendance->clock_in }}">
                             @error('request_clock_in')
                             <p style="color: red;" class="error-message">{{ $message }}</p>
                             @enderror
@@ -56,18 +54,18 @@
                     
                         <div class="break-input-group">
                             <input type="time" name="request_clock_out"
-                                value="{{ $request->request_clock_out ? \Carbon\Carbon::parse($request->request_clock_out)->format('H:i') : '' }}">
+                                value="{{ $attendanceRequest->attendance->clock_out }}"> 
                     
-                            @error('request_clock_out')
+                            @error('request_clock_in')
                             <p style="color: red;" class="error-message">{{ $message }}</p>
                             @enderror
-                        </div>
+                        </div>                  
                     </div>
                     </td>
                 </tr>
 
                 @foreach ($displayBreaks as $index => $break)
-                <tr>
+                <tr>{{ count($displayBreaks) }}
                     <th>
                         休憩{{ $index === 0 ? '' : $index + 1 }}
                     </th>
@@ -122,7 +120,7 @@
                 <tr>
                     <th>備考</th>
                     <td>
-                        <textarea name="note" rows="3">{{ old('note', $request->note) }}
+                        <textarea name="note" rows="3">{{ old('note', $attendanceRequest->note) }}
             </textarea>
                         @error('note')
                         <p style="color: red;"> {{ $message }}</p>
@@ -133,7 +131,7 @@
     </div>
 
 @php
-$requestStatus = optional($request)->status;
+$requestStatus = optional($attendanceRequest)->status;
 @endphp
 
 {{-- 承認待ちならボタン出す --}}
