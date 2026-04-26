@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('css')
 <link rel="stylesheet" href="{{ asset('css/attendance.css') }}">
@@ -11,7 +11,6 @@
         <div class="line"></div>
         <h1 class="detail-title">勤怠詳細</h1>
     </div>
-        attendance_id: {{ $attendanceRequest->attendance->id }}
     <div class="detail-card attendance-box">
 
         <form action="/stamp_correction_request/approve/{{ $attendanceRequest->id }}" method="POST">
@@ -63,61 +62,69 @@
                     </div>
                     </td>
                 </tr>
-
+                {{-- 既存の休憩表示 --}}
                 @foreach ($displayBreaks as $index => $break)
-                <tr>{{ count($displayBreaks) }}
-                    <th>
-                        休憩{{ $index === 0 ? '' : $index + 1 }}
-                    </th>
+                <tr>
+                    <th>休憩{{ $index + 1 }}</th>
                     <td>
                         <div class="break-row">
+                
                             <div class="break-input-group">
                                 <input type="time" name="breaks[{{ $index }}][break_start]"
                                     value="{{ optional($break->break_start)->format('H:i') }}">
+                
                                 @error('breaks.' . $index . '.break_start')
-                                <p style="color: red;" class="error-message">{{ $message }}</p>
+                                <p style="color: red;">{{ $message }}</p>
                                 @enderror
                             </div>
-
-
-                            <span class="tilde">〜</span>
-
+                
+                            <span>〜</span>
+                
                             <div class="break-input-group">
                                 <input type="time" name="breaks[{{ $index }}][break_end]"
                                     value="{{ optional($break->break_end)->format('H:i') }}">
+                
                                 @error('breaks.' . $index . '.break_end')
-                                <p style="color: red;" class="error-message">{{ $message }}</p>
+                                <p style="color: red;">{{ $message }}</p>
                                 @enderror
                             </div>
+                
                         </div>
                     </td>
                 </tr>
                 @endforeach
-
+                
+                
+                {{-- 新しく追加する1行 --}}
                 <tr>
                     <th>休憩{{ count($displayBreaks) + 1 }}</th>
                     <td>
-
                         <div class="break-row">
+                
                             <div class="break-input-group">
                                 <input type="time" name="breaks[{{ count($displayBreaks) }}][break_start]"
                                     value="{{ old('breaks.' . count($displayBreaks) . '.break_start') }}">
-                                <p style="color: red;">
-                                    {{ $errors->first('breaks.' . count($displayBreaks) . '.break_start') }}
-                                </p>
+                
+                                @error('breaks.' . count($displayBreaks) . '.break_start')
+                                <p style="color: red;">{{ $message }}</p>
+                                @enderror
                             </div>
-
-                            <span class="tilde">〜</span>
-
-                            <input type="time" name="breaks[{{ count($displayBreaks) }}][break_end]"
-                                value="{{ old('breaks.' . count($displayBreaks) . '.break_end') }}">
-                            <p style="color: red;">
-                                {{ $errors->first('breaks.' . count($displayBreaks) . '.break_end') }}
-                            </p>
+                
+                            <span>〜</span>
+                
+                            <div class="break-input-group">
+                                <input type="time" name="breaks[{{ count($displayBreaks) }}][break_end]"
+                                    value="{{ old('breaks.' . count($displayBreaks) . '.break_end') }}">
+                
+                                @error('breaks.' . count($displayBreaks) . '.break_end')
+                                <p style="color: red;">{{ $message }}</p>
+                                @enderror
+                            </div>
+                
                         </div>
                     </td>
                 </tr>
-                <tr>
+                
                     <th>備考</th>
                     <td>
                         <textarea name="note" rows="3">{{ old('note', $attendanceRequest->note) }}
@@ -135,24 +142,13 @@ $requestStatus = optional($attendanceRequest)->status;
 @endphp
 
 {{-- 承認待ちならボタン出す --}}
-@if ($requestStatus === 0)
 <div class="button-area">
-    <button type="submit" class="submit-btn">修正</button>
-</div>
-@endif
-
-{{-- 承認済みなら表示 --}}
-@if ($requestStatus !== 0)
-<p>承認済み</p>
-@endif
-
+    @if ($requestStatus === 0)
+        <button type="submit" class="submit-btn">修正</button>
+    @else
+        <span class="submit-btn approved-btn">承認済み</span>
+    @endif
+</div>     
 </form>
-
-{{-- 承認待ちメッセージ --}}
-@if ($requestStatus === 0)
-<p style="color:red;">
-    ※承認待ちのため修正できます。
-</p>
-@endif
 
 @endsection    

@@ -44,11 +44,12 @@ class AttendanceRequestController extends Controller
     //表示用
     public function approve($id)
     {
-        $attendanceRequest = AttendanceRequest::find($id);
-        
         $attendanceRequest = AttendanceRequest::with('attendance.breaks')->find($id);
 
-        $displayBreaks = $attendanceRequest->attendance->breaks;
+        $attendance = $attendanceRequest->attendance;
+
+
+        $displayBreaks = $attendance->breaks;
 
         return view('admin.attendance.approve', compact('attendanceRequest', 'displayBreaks'));
     }
