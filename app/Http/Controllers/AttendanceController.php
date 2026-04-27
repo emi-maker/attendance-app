@@ -189,10 +189,10 @@ class AttendanceController extends Controller
        $attendance = Attendance::with('breaks')
           ->findOrFail($id);
 
-    $attendanceRequest = AttendanceRequest::with('breakRequests')
-        ->where('attendance_id', $attendance->id)
-        ->latest()
-        ->first();
+        $attendanceRequest = AttendanceRequest::with('breakRequests')
+            ->where('attendance_id', $attendance->id)
+            ->first();
+ 
 
     $displayBreaks = [];
 
@@ -211,6 +211,13 @@ class AttendanceController extends Controller
             ];
         }
     }
+    $clockIn = null;
+
+    if ($attendanceRequest &&       $attendanceRequest->request_clock_in) {
+        $clockIn =      $attendanceRequest->request_clock_in;
+    } elseif ($attendance && $attendance->clock_in) {
+        $clockIn = $attendance->clock_in;
+    }
 
     $clockOut = null;
 
@@ -220,13 +227,7 @@ class AttendanceController extends Controller
         $clockOut = $attendance->clock_out;
     }
 
-    $clockIn = null;
-
-    if ($attendanceRequest && $attendanceRequest->request_clock_in) {
-        $clockIn = $attendanceRequest->request_clock_in;
-    } elseif ($attendance && $attendance->clock_in) {
-        $clockIn = $attendance->clock_in;
-    }
+    $note = $attendanceRequest ? $attendanceRequest->note : $attendance->note;
 
     $date = $attendance->work_date;
 
@@ -237,7 +238,8 @@ class AttendanceController extends Controller
         'clockIn',
         'clockOut',
         'displayBreaks',
-        'date'
+        'date',
+        'note'
     ));
 }  
 
@@ -252,30 +254,17 @@ class AttendanceController extends Controller
         return redirect('/attendance');
     }
 
-        $attendanceRequest = AttendanceRequest::where('attendance_id', optional($attendance)->id)
-    ->where('user_id', auth()->id())
-    ->first();
-
-    if ($attendanceRequest) {
-        // すでにある → 更新
-        $attendanceRequest->update([
-            'request_clock_in' => $request->request_clock_in,
-            'request_clock_out' => $request->request_clock_out,
-            'note' => $request->note,
-            'status' => 0,
-    ]);
-
-} else {
-    // 初回 → 作成
-    $attendanceRequest = AttendanceRequest::create([
+        $attendanceRequest = AttendanceRequest::firstOrNew([
+        'attendance_id' => $attendance->id,
         'user_id' => auth()->id(),
-        'attendance_id' => optional($attendance)->id,
-        'request_clock_in' => $request->request_clock_in,
-        'request_clock_out' => $request->request_clock_out,
-        'note' => $request->note,
-        'status' => 0,
     ]);
-}
+
+    $attendanceRequest->request_clock_in = $request->request_clock_in;
+    $attendanceRequest->request_clock_out = $request->request_clock_out;
+    $attendanceRequest->note = $request->note;
+    $attendanceRequest->status = 0;
+
+    $attendanceRequest->save();
 
         BreakRequest::where('attendance_request_id', $attendanceRequest->id)->delete();
 

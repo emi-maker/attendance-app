@@ -136,8 +136,8 @@
     <tr>
         <th>備考</th>
         <td>
-            <textarea name="note" rows="3">{{ old('note', optional($attendanceRequest)->note ?? optional($attendance)->note) }}
-            </textarea>
+        <textarea name="note"
+            rows="3">{{ $note }}</textarea>    
             @error('note')
             <p style="color: red;"> {{ $message }}</p>
             @enderror
@@ -151,7 +151,18 @@ $requestStatus = optional($attendanceRequest)->status;
 @endphp
 
 <div class="button-area">
+
+    @if ($requestStatus === 0)
+    <p style="color:red;">承認待ちのため修正できません</p>
+
+    @elseif ($requestStatus === 1)
+    <p>承認済</p>
+
+    @else
     <button type="submit" class="submit-btn">修正</button>
+
+    @endif
+
 </div>
 
 </form>

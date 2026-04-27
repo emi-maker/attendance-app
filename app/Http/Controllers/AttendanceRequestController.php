@@ -10,8 +10,8 @@ class AttendanceRequestController extends Controller
 {
 
     public function index()
-    {  
-      if (session('role') === 'admin') {
+    { 
+     if (auth()->user()->role === 'admin') {
         return $this->adminIndex();  
     }
 
@@ -26,7 +26,7 @@ class AttendanceRequestController extends Controller
         ->get();
     
     return view('requests.index', compact('pendingRequests', 'approvedRequests'));
-}
+}  
 
     public function adminIndex()
     {

@@ -56,6 +56,8 @@ class AdminAttendanceController extends Controller
         $date = $attendance->work_date;
 
         $mode = 'edit';
+
+        $note = $attendanceRequest ? $attendanceRequest->note : $attendance->note;
         
         return view('admin.attendance.detail', compact(
             'attendance',
@@ -64,7 +66,8 @@ class AdminAttendanceController extends Controller
             'clockOut',
             'displayBreaks',
             'date',
-            'mode'
+            'mode',
+            'note'
         ));
     }
 

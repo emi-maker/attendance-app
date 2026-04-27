@@ -143,8 +143,7 @@
     <tr>
         <th>備考</th>
         <td>
-            <textarea name="note" rows="3">{{ old('note', optional($attendance)->note) }}
-            </textarea>
+           <textarea name="note">{{ $note }}</textarea> 
             @error('note')
             <p style="color: red;"> {{ $message }}</p>
             @enderror

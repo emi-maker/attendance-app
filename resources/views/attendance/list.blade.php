@@ -37,45 +37,48 @@
                 <th>詳細</th>
             </tr>
 
-            @foreach ($dates as $date)
-            @php
-            $attendance = $attendances->first(function ($item) use ($date) {
-            return \Carbon\Carbon::parse($item->work_date)->format('Y-m-d') === $date->format('Y-m-d');
-            });
-            @endphp
-            <tr>
-                <td>
-                    {{ $date->format('m/d') }}
-                    ({{ $date->locale('ja')->isoFormat('ddd') }})
-                </td>
 
-                <td>
-                    {{ $attendance && $attendance->clock_in ?
-                    \Carbon\Carbon::parse($attendance->clock_in)->format('H:i') : '' }}
-                </td>
+                @foreach ($dates as $date)
+                    @php
+                        $attendance = $attendances->first(function ($item) use ($date) {
+                            return \Carbon\Carbon::parse($item->work_date)->toDateString() === $date->toDateString();
+                        });
+                @endphp
 
-                <td>
-                    {{ $attendance && $attendance->clock_out ?
-                    \Carbon\Carbon::parse($attendance->clock_out)->format('H:i') : '' }}
-                </td>
-                <td>
-                    {{ $attendance ? $attendance->break_formatted : '' }}
-                </td>
-                <td>
-                    {{ $attendance ? $attendance->work_formatted : '' }}
-                </td>
-                <td>
-                    
-                    @if ($attendance)
-                        <a href="{{ url('/attendance/detail/' . $attendance->id) }}">
-                        詳細</a>
-                    @else
-                        <a href="{{ url('/attendance/detail/date/' . $date->format('Y-m-d')) }}">
-                        詳細</a>    
-                    @endif
-                </td>
-            </tr>
-            @endforeach
+                <tr>
+                    <td>
+                        {{ $date->format('m/d') }}
+                        ({{ $date->locale('ja')->isoFormat('ddd') }})
+                    </td>
+
+                    <td>
+                        {{ $attendance && $attendance->clock_in ?
+                        \Carbon\Carbon::parse($attendance->clock_in)->format('H:i') : '' }}
+                    </td>
+
+                    <td>
+                        {{ $attendance && $attendance->clock_out ?
+                        \Carbon\Carbon::parse($attendance->clock_out)->format('H:i') : '' }}
+                    </td>
+                    <td>
+                        {{ $attendance ? $attendance->break_formatted : '' }}
+                    </td>
+                    <td>
+                        {{ $attendance ? $attendance->work_formatted : '' }}
+                    </td>
+                    <td>
+                        
+                        @if ($attendance)
+                            <a href="{{ url('/attendance/detail/' . $attendance->id) }}">
+                            詳細</a>
+                        @else
+                            <a href="{{ url('/attendance/detail/date/' . $date->format('Y-m-d')) }}">
+                                詳細
+                            </a>
+                        @endif
+                    </td>
+                </tr>
+                @endforeach
 
         </table>
     </div>
