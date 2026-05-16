@@ -1,0 +1,262 @@
+body {
+    background: #f0f0f0;
+}
+.attendance-wrapper {
+    height: calc(100vh - 80px); /* ヘッダー分引く */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* 縦中央 */
+    align-items: center; /* 横中央 */
+    text-align: center;
+}
+
+.attendance-status {
+    display: inline-block;
+    color: #696969;
+    background: #d9d9d9; /* ネズミ色 */
+    padding: 8px 20px;
+    border-radius: 20px; /* 角丸 */
+    font-size: 14px;
+    margin-bottom: 30px;
+}
+
+.attendance-date {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.attendance-time {
+    font-size: 64px;
+    font-weight: bold;
+    margin-bottom: 40px;
+}
+
+.attendance-btn {
+    width: 100px;
+    height: 45px;
+    background: #000;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    display: inline-block;
+}
+
+.attendance-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 50px;
+}
+
+.attendance-buttons form {
+    margin: 0;
+    width: auto;
+}
+
+.break-btn {
+    background: #fff;
+    color: #000;
+}
+
+.detail-card {
+    background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    margin: 0 auto;
+}
+
+.detail-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.detail-table th {
+    width: 40%;
+    text-align: center;
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+}
+
+.detail-table td {
+    width: 60%;
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.title-area {
+    display: flex;
+    align-items: center;
+    width: 80%;
+    margin: 50px auto 0;
+    gap: 10px;
+}
+
+.line {
+    width: 5px;
+    height: 40px;
+    background: black;
+    margin-right: 10px;
+    flex-shrink: 0;
+}
+
+.title-text {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+input[type="time"] {
+    padding: 8px;
+}
+
+.submit-btn {
+    display: inline-block;
+    margin-top: 10px;
+    margin-left: 0;
+    padding: 10px 30px;
+    background: black;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+.break-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.tilde {
+    display: inline-block;
+    width: 20px;
+    text-align: center;
+}
+
+textarea {
+    width: 80%;
+    max-width: 400px;
+    padding: 10px;
+    display: block;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.date-box {
+    display: flex;
+    gap: 100px;
+    align-items: center;
+}
+
+.button-area {
+    width: 80%;
+    margin: 20px auto 0;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.detail-container {
+    width: 70%;
+    margin: 50px auto;
+}
+
+.attendance-box {
+    width: 80%;
+    max-width: 800px;
+    margin: 0 auto 20px;
+}
+
+/*申請一覧*/
+
+.request-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.request-table th {
+    padding: 10px;
+    border-bottom: 3px solid #ddd;
+}
+
+.request-table td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+}
+
+.tab-menu {
+    display: flex;
+    gap: 50px;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 20px;
+}
+
+.tab {
+    background: none;
+    border: none;
+    padding: 10px 10px;
+    font-size: 16px;
+    cursor: pointer;
+    color: #999;
+}
+
+.tab.active {
+    border-bottom: 3px solid black;
+    color: black;
+    font-weight: bold;
+}
+
+.break-input-group {
+    display: flex;
+    flex-direction: column;
+    width: 90px;
+}
+
+.error-message {
+    color: red;
+    margin-top: 5px;
+    font-size: 15px;
+    display: block;
+}
+
+.submit-btn.approved-btn {
+    background-color: #999;
+    color: #fff;
+    cursor: not-allowed;
+    border: none;
+}
+
+.csv-button-area {
+    width: 100%;
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.csv-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #000;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.detail-table th,
+.detail-table td,
+.request-table th,
+.request-table td {
+    color: #696969;
+}
+
+.status-message-wrap {
+    display: flex;
+    justify-content: flex-end; /* ←右寄せ */
+}
+
+.status-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 10px;
+}

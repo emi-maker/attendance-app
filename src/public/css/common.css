@@ -1,0 +1,160 @@
+.header {
+  background: #000;
+}
+
+.header__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-nav {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+}
+
+.header-nav a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.header-nav button {
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+}
+
+.verify-container {
+  height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.verify-text {
+  margin-bottom: 30px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.verify-button {
+  background-color: #ddd;
+  border: 1px solid #999;
+  padding: 10px 30px;
+  cursor: pointer;
+  margin-bottom: 15px;
+  border-radius: 6px;
+ font-weight: bold;
+}
+
+.resend-link {
+  background: none;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.resend-link {
+  margin-top: 10px;
+}
+
+
+/*一覧共通スタイル*/
+
+body {
+  background-color: #f0f0f0;
+}
+
+.container {
+  width: 900px;
+  margin: 0 auto;
+}
+
+.card {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.card-header {
+  margin-bottom: 20px;
+}
+
+.date-card {
+  background-color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.box {
+    width: 80%;
+    margin: 0 auto 20px;
+}
+
+.attendance-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed; 
+}
+
+.attendance-table th {
+  color: #696969;
+  padding: 10px;
+  border-bottom: 3px solid #ddd;
+  text-align: center; 
+}
+
+
+.attendance-table td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  text-align: center; 
+}
+
+
+.date-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-form {
+  margin: 0;
+}
+
+.nav-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  outline: none;
+}
+
+.attendance-title {
+  margin: 50px 0;
+  border-left: 5px solid black;
+  padding-left: 10px;
+  font-size: 20px;
+}
+
+table td{
+    color: #555;
+}
+
+.date-center {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}

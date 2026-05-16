@@ -1,0 +1,88 @@
+@extends('layouts.admin')
+
+@section('css')
+<link rel="stylesheet" href="{{ asset('css/common.css') }}">
+<link rel="stylesheet" href="{{ asset('css/attendance.css') }}">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+@endsection
+
+@section('content')
+ 
+<div class="detail-container">
+    <div class="title-area">
+        <div class="line"></div>
+            <h1>{{ $user->name }}さんの勤怠</h1>
+    </div>
+
+
+    <div class="date-card attendance-box">
+        <div class="date-nav">
+            <a href="?month={{\Carbon\Carbon::parse($month)->subMonth()->format('Y-m') }}">← 前月</a>
+
+            <div class="date-center">
+                <div class="date-center">
+                    <i class="fa-regular fa-calendar"></i>
+                        {{ \Carbon\Carbon::parse($month)->format('Y/m') }}
+                </div>
+            </div>
+            <a href="?month={{ \Carbon\Carbon::parse($month)->addMonth()->format('Y-m') }}">翌月 →</a>
+        </div>
+    </div>
+
+    <div class="card attendance-box">
+        <table class="attendance-table">
+
+            <tr>
+                <th>日付</th>
+                <th>出勤</th>
+                <th>退勤</th>
+                <th>休憩</th>
+                <th>合計</th>
+                <th>詳細</th>
+            </tr>
+
+            @foreach ($dates as $date)
+            @php
+            $attendance = $attendances->first(function ($item) use ($date) {
+            return \Carbon\Carbon::parse($item->work_date)->format('Y-m-d') === $date->format('Y-m-d');
+            });
+            @endphp
+            <tr>
+                <td>
+                    {{ $date->format('m/d') }}
+                    ({{ $date->locale('ja')->isoFormat('ddd') }})
+                </td>
+
+                <td>
+                    {{ $attendance && $attendance->clock_in ?
+                    \Carbon\Carbon::parse($attendance->clock_in)->format('H:i') : '' }}
+                </td>
+
+                <td>
+                    {{ $attendance && $attendance->clock_out ?
+                    \Carbon\Carbon::parse($attendance->clock_out)->format('H:i') : '' }}
+                </td>
+                <td>
+                    {{ $attendance ? $attendance->break_formatted : '' }}
+                </td>
+                <td>
+                    {{ $attendance ? $attendance->work_formatted : '' }}
+                </td>
+                <td>
+                   <a href="{{ url('/admin/attendance/' . $user->id . '/date/' . $date->format('Y-m-d')) }}">詳細</a>
+                </td>
+            </tr>
+            @endforeach
+
+        </table>
+    </div>
+</div>
+<div class="attendance-box csv-button-wrapper">
+    <div class="csv-button-area">
+        <a href="/admin/attendance/staff/{{ $user->id }}/csv?month={{ $month }}" class="csv-button">
+        CSV出力
+        </a>
+</div>
+@endsection

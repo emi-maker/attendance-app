@@ -1,0 +1,22 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class BreakRequest extends Model
+{
+    
+    use HasFactory;
+
+    protected $fillable = [
+        'user_id',
+        'attendance_id',
+        'attendance_request_id',
+        'break_id',
+        'break_start',
+        'break_end',
+        'status',
+    ];
+}
