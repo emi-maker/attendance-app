@@ -4,30 +4,35 @@
 
 ## 環境構築
 
-**リポジトリをクローン**
+### リポジトリをクローン
 
 1. git clone リポジトリURL
 2. cd attendance-app
 
-**DockerDesktopアプリを立ち上げる**
+### DockerDesktopアプリを立ち上げる
 
 ```bash
 docker-compose up -d --build
 ```
 
-**Laravel環境構築**
+### Laravel環境構築
 
-1. `docker-compose exec php bash`
+1.  `PHPコンテナへ入る` 
+```bash 
+`docker-compose exec php bash`
+```
 2. `srcディレクトリへ移動`
-    ```bash
-    cd src
-    ```
-
-3. `composer install`
+```bash
+cd src
+```
+3. `composerをインストール`
+```bash
+composer install
+```
 4. .envファイルを作成
-    ```bash
-    cp .env.example .env
-     ```
+```bash
+cp .env.example .env
+```
 5. .envファイルのDB設定を変更
 
 #### DBの設定
