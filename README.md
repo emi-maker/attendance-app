@@ -7,12 +7,12 @@
 **リポジトリをクローン**
 
 1. git clone リポジトリURL
-2. cd coachtech/laravel/attendance-app
+2. cd attendance-app
 
 **DockerDesktopアプリを立ち上げる**
 
 ```bash
-docker-compose up -d
+docker-compose up -d --build
 ```
 
 **Laravel環境構築**
@@ -75,22 +75,15 @@ MAIL_FROM_ADDRESS=test@example.com
 MAIL_FROM_NAME="${APP_NAME}"
 ```
 
-5.アプリケーションキーの作成（srcディレクトリ内で実行）
+6.アプリケーションキーの作成（srcディレクトリ内で実行）
 
 ```bash
 php artisan key:generate
 ```
 
-6.マイグレーションの実行（srcディレクトリ内で実行）
-
+7.マイグレーション、シーダーの実行（srcディレクトリ内で実行）
 ```bash
-php artisan migrate
-```
-
-7.シーディングの実行
-
-```bash
-php artisan db:seed
+php artisan migrate --seed
 ```
 
 ## 使用技術
