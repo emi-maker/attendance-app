@@ -42,6 +42,17 @@ DB_DATABASE=laravel_db
 DB_USERNAME=laravel_user
 DB_PASSWORD=laravel_pass
 ```
+
+6.アプリケーションキーの作成（srcディレクトリ内で実行）
+
+```bash
+php artisan key:generate
+```
+
+7.マイグレーション、シーダーの実行（srcディレクトリ内で実行）
+```bash
+php artisan migrate --seed
+```
 ## テスト用アカウント
 
 ### 一般ユーザー1
@@ -57,13 +68,12 @@ password: aaa11111
 email: admin@test.com  
 password: 12345678
 
-### メール設定（メール認証機能）
+## メール設定（メール認証機能）
 
 本アプリではメール認証機能を実装しています。
 メール送信には Mailtrap を使用しています。
 
 動作確認する場合は .env に以下の設定を追加してください。
-
 ```bash
 MAIL_MAILER=smtp
 MAIL_HOST=sandbox.smtp.mailtrap.io
@@ -73,17 +83,6 @@ MAIL_PASSWORD=各自のMailtrapのパスワード
 MAIL_ENCRYPTION=tls
 MAIL_FROM_ADDRESS=test@example.com
 MAIL_FROM_NAME="${APP_NAME}"
-```
-
-6.アプリケーションキーの作成（srcディレクトリ内で実行）
-
-```bash
-php artisan key:generate
-```
-
-7.マイグレーション、シーダーの実行（srcディレクトリ内で実行）
-```bash
-php artisan migrate --seed
 ```
 
 ## 使用技術
