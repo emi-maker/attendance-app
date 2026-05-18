@@ -19,7 +19,7 @@ docker-compose up -d --build
 
 1.  `PHPコンテナへ入る` 
 ```bash 
-`docker-compose exec php bash`
+docker-compose exec php bash
 ```
 2. `srcディレクトリへ移動`
 ```bash
@@ -60,15 +60,15 @@ php artisan migrate --seed
 ```
 ## テスト用アカウント
 
-### 一般ユーザー1
+#### 一般ユーザー1
 email: test@test.com  
 password: 12345678
 
-### 一般ユーザー2
+#### 一般ユーザー2
 email: test@example.org  
 password: aaa11111
 
-### 管理者ユーザー
+#### 管理者ユーザー
 
 email: admin@test.com  
 password: 12345678
@@ -108,7 +108,7 @@ MAIL_FROM_NAME="${APP_NAME}"
 
 ## 主な機能
 
-### 一般ユーザー
+#### 一般ユーザー
 
 - 会員登録
 - ログイン
@@ -120,7 +120,7 @@ MAIL_FROM_NAME="${APP_NAME}"
 - 勤怠詳細表示
 - 勤怠修正申請
 
-### 管理者
+#### 管理者
 
 - ログイン
 - スタッフ一覧表示
